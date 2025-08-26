@@ -261,6 +261,18 @@ class HomeScreen extends ConsumerWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await context.router.push(const AddScheduleRoute());
+          if (result != null && context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('일정이 저장되었습니다.')),
+            );
+            // 필요 시 홈 데이터 리프레시 트리거 위치
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

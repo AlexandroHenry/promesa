@@ -14,6 +14,8 @@ import '../../presentation/main/settings/screens/notification_settings_screen.da
 
 // Shared Screens
 import '../../presentation/shared/screens/webview_screen.dart';
+// Schedule Screens
+import '../../presentation/schedule/add/add_schedule_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -100,6 +102,12 @@ class AppRouter extends _$AppRouter {
     AutoRoute(
       page: ImageViewerRoute.page,
       path: '/image-viewer',
+    ),
+
+    // ==================== Schedule Routes ====================
+    AutoRoute(
+      page: AddScheduleRoute.page,
+      path: '/add-schedule',
     ),
   ];
 }
@@ -405,6 +413,17 @@ class ImageViewerPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white)),
       ),
     );
+  }
+}
+
+// Schedule Pages
+@RoutePage()
+class AddSchedulePage extends StatelessWidget {
+  const AddSchedulePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const AddScheduleScreen();
   }
 }
 

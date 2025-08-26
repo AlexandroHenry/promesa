@@ -4,7 +4,7 @@ targets:
       # Riverpod 코드 생성
       riverpod_generator:
         generate_for:
-          - lib/presentation/providers/**
+          - lib/**
       
       # AutoRoute 코드 생성
       auto_route_generator:

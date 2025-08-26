@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AccountSettingsPage(),
       );
     },
+    AddScheduleRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const AddSchedulePage(),
+      );
+    },
     HomeDetailRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -129,6 +135,20 @@ class AccountSettingsRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'AccountSettingsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [AddSchedulePage]
+class AddScheduleRoute extends PageRouteInfo<void> {
+  const AddScheduleRoute({List<PageRouteInfo>? children})
+      : super(
+          AddScheduleRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AddScheduleRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
