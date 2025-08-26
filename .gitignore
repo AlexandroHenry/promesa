@@ -7,7 +7,6 @@
 .packages
 build/
 flutter_*.png
-lib/generated_plugin_registrant.dart
 
 ############################################
 # Platform-specific (Android)
