@@ -1,0 +1,47 @@
+# This file configures the analyzer, which statically analyzes Dart code to
+# check for errors, warnings, and lints.
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "**/*.gr.dart"
+    - "**/generated/**"
+  
+  plugins:
+    - custom_lint
+
+linter:
+  rules:
+    # Style
+    prefer_single_quotes: true
+    prefer_const_constructors: true
+    prefer_const_literals_to_create_immutables: true
+    prefer_const_declarations: true
+    prefer_final_locals: true
+    prefer_final_fields: true
+    
+    # Error prone
+    avoid_print: true
+    avoid_unnecessary_containers: true
+    avoid_web_libraries_in_flutter: true
+    no_logic_in_create_state: true
+    
+    # Performance
+    prefer_collection_literals: true
+    unnecessary_parenthesis: true
+    unnecessary_string_interpolations: true
+    
+    # Documentation
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false
+    
+    # Riverpod specific (with custom_lint)
+    # These will be handled by riverpod_lint package
+
+# Custom lint rules (mainly for Riverpod)
+custom_lint:
+  rules:
+    # Riverpod rules will be automatically detected

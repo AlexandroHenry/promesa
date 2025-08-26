@@ -1,0 +1,40 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "iPhone 15 Pro",
+      "description": "최신 iPhone 모델",
+      "price": 1390000,
+      "category": "스마트폰",
+      "image": "https://via.placeholder.com/300x300",
+      "stock": 15,
+      "rating": 4.8,
+      "reviews": 127,
+      "tags": ["애플", "스마트폰", "프리미엄"]
+    },
+    {
+      "id": 2,
+      "name": "Galaxy S24 Ultra",
+      "description": "삼성 플래그십 스마트폰",
+      "price": 1250000,
+      "category": "스마트폰",
+      "image": "https://via.placeholder.com/300x300",
+      "stock": 23,
+      "rating": 4.7,
+      "reviews": 89,
+      "tags": ["삼성", "스마트폰", "카메라"]
+    },
+    {
+      "id": 3,
+      "name": "MacBook Air M3",
+      "description": "최신 M3 칩셋 탑재 노트북",
+      "price": 1590000,
+      "category": "노트북",
+      "image": "https://via.placeholder.com/300x300",
+      "stock": 8,
+      "rating": 4.9,
+      "reviews": 203,
+      "tags": ["애플", "노트북", "M3칩"]
+    }
+  ]
+}
