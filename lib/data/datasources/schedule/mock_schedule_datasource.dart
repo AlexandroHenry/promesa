@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
 import '../../../domain/entities/participant_entity.dart';
+import '../../../domain/entities/preparation_entity.dart';
 import '../../../domain/entities/schedule_entity.dart';
 
 class MockScheduleDataSource {
@@ -36,7 +37,12 @@ class MockScheduleDataSource {
       latitude: (map['latitude'] as num?)?.toDouble(),
       longitude: (map['longitude'] as num?)?.toDouble(),
       placeName: map['placeName'] as String?,
-      preparations: ((map['preparations'] as List<dynamic>?) ?? []).cast<String>(),
+      preparations: ((map['preparations'] as List<dynamic>?) ?? [])
+          .map((e) => PreparationEntity(
+                name: e is String ? e : (e['name'] as String? ?? ''),
+                assignedToUserId: e is Map<String, dynamic> ? e['assignedToUserId'] as String? : null,
+              ))
+          .toList(),
       participants: ((map['participants'] as List<dynamic>?) ?? [])
           .map((p) => ParticipantEntity(
                 id: p['id'] as String,
@@ -58,7 +64,7 @@ class MockScheduleDataSource {
     required int lateFineAmount,
     required String description,
     required List<String> participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,
@@ -101,7 +107,7 @@ class MockScheduleDataSource {
     int? lateFineAmount,
     String? description,
     List<String>? participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,

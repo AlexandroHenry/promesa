@@ -1,5 +1,6 @@
 import '../../entities/schedule_entity.dart';
 import '../../repositories/schedule_repository.dart';
+import '../../entities/preparation_entity.dart';
 
 class UpdateScheduleUseCase {
   final ScheduleRepository repository;
@@ -15,7 +16,7 @@ class UpdateScheduleUseCase {
     int? lateFineAmount,
     String? description,
     List<String>? participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,

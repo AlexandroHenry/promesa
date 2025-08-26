@@ -4,6 +4,7 @@ import '../../../../data/datasources/schedule/mock_schedule_datasource.dart';
 import '../../../../data/repositories/schedule_repository_impl.dart';
 import '../../../../domain/entities/schedule_entity.dart';
 import '../../../../domain/repositories/schedule_repository.dart';
+import '../../../../domain/entities/preparation_entity.dart';
 import '../../../../domain/usecases/schedule/create_schedule_usecase.dart';
 
 part 'add_schedule_provider.freezed.dart';
@@ -49,7 +50,7 @@ class AddScheduleNotifier extends _$AddScheduleNotifier {
     required int lateFineAmount,
     required String description,
     required List<String> participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,

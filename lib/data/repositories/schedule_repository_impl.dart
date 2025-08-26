@@ -1,3 +1,4 @@
+import '../../domain/entities/preparation_entity.dart';
 import '../../domain/entities/schedule_entity.dart';
 import '../../domain/repositories/schedule_repository.dart';
 import '../datasources/schedule/mock_schedule_datasource.dart';
@@ -16,7 +17,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     required int lateFineAmount,
     required String description,
     required List<String> participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,
@@ -51,7 +52,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     int? lateFineAmount,
     String? description,
     List<String>? participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,

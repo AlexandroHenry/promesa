@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '00_state/add_schedule_provider.dart';
 import '../../../domain/entities/schedule_entity.dart';
+import '../../../domain/entities/preparation_entity.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
@@ -27,7 +28,7 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
   ScheduleColor _color = ScheduleColor.blue;
   LatLng? _selectedLatLng;
   final List<Map<String, String>> _selectedFriends = [];
-  final List<String> _preparations = [];
+  final List<PreparationEntity> _preparations = [];
   
   String _colorToHex(Color color) {
     return '#'
@@ -148,6 +149,52 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
     } catch (_) {
       return [];
     }
+  }
+
+  Future<void> _assignPreparation(PreparationEntity prep) async {
+    final choice = await showModalBottomSheet<String>(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
+      builder: (context) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              Text('"${prep.name}" 할당', style: const TextStyle(fontWeight: FontWeight.bold)),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.groups),
+                title: const Text('전체 (모두가 준비)'),
+                onTap: () => Navigator.pop(context, 'ALL'),
+              ),
+              for (final f in _selectedFriends)
+                ListTile(
+                  leading: const Icon(Icons.person),
+                  title: Text(f['name']!),
+                  onTap: () => Navigator.pop(context, f['id']!),
+                ),
+              ListTile(
+                leading: const Icon(Icons.clear),
+                title: const Text('할당 해제'),
+                onTap: () => Navigator.pop(context, ''),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+    if (choice == null) return;
+    setState(() {
+      final idx = _preparations.indexOf(prep);
+      if (idx != -1) {
+        _preparations[idx] = PreparationEntity(
+          name: prep.name,
+          assignedToUserId: choice.isEmpty ? null : choice,
+        );
+      }
+    });
   }
 
   Future<void> _openColorPickerDialog() async {
@@ -351,7 +398,7 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
                       onSubmitted: (v) {
                         if (v.trim().isEmpty) return;
                         setState(() {
-                          _preparations.add(v.trim());
+                          _preparations.add(PreparationEntity(name: v.trim()));
                           _prepInputController.clear();
                         });
                       },
@@ -363,7 +410,7 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
                       final v = _prepInputController.text.trim();
                       if (v.isEmpty) return;
                       setState(() {
-                        _preparations.add(v);
+                        _preparations.add(PreparationEntity(name: v));
                         _prepInputController.clear();
                       });
                     },
@@ -377,8 +424,22 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
                 runSpacing: 8,
                 children: [
                   for (final p in _preparations)
-                    Chip(
-                      label: Text(p),
+                    InputChip(
+                      label: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(p.name),
+                          if (p.assignedToUserId == 'ALL') ...[
+                            const SizedBox(width: 6),
+                            const Icon(Icons.groups, size: 14),
+                          ] else if (p.assignedToUserId != null) ...[
+                            const SizedBox(width: 6),
+                            const Icon(Icons.person, size: 14),
+                          ],
+                        ],
+                      ),
+                      avatar: const CircleAvatar(radius: 10, child: Icon(Icons.inventory_2, size: 12)),
+                      onPressed: () => _assignPreparation(p),
                       onDeleted: () {
                         setState(() {
                           _preparations.remove(p);

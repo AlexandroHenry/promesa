@@ -1,4 +1,5 @@
 import 'participant_entity.dart';
+import 'preparation_entity.dart';
 
 enum ScheduleColor {
   blue,
@@ -21,7 +22,7 @@ class ScheduleEntity {
   final double? latitude;
   final double? longitude;
   final String? placeName;
-  final List<String> preparations;
+  final List<PreparationEntity> preparations;
 
   const ScheduleEntity({
     required this.id,

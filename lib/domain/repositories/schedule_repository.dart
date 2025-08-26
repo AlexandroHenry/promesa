@@ -1,4 +1,5 @@
 import '../entities/schedule_entity.dart';
+import '../entities/preparation_entity.dart';
 
 abstract class ScheduleRepository {
   Future<ScheduleEntity> createSchedule({
@@ -9,7 +10,7 @@ abstract class ScheduleRepository {
     required int lateFineAmount,
     required String description,
     required List<String> participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,
@@ -26,7 +27,7 @@ abstract class ScheduleRepository {
     int? lateFineAmount,
     String? description,
     List<String>? participantUserIds,
-    List<String>? preparations,
+    List<PreparationEntity>? preparations,
     double? latitude,
     double? longitude,
     String? placeName,
