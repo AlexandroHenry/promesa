@@ -468,8 +468,34 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
                           const SizedBox(width: 6),
                           if (p.assignedToUserIds.isEmpty)
                             const Text('(전체)', style: TextStyle(fontSize: 12))
-                          else if (p.assignedToUserIds.isNotEmpty)
-                            Text('(${_selectedFriends.where((f) => p.assignedToUserIds.contains(f['id'])).map((f) => f['name']).join(', ')})', style: const TextStyle(fontSize: 12)),
+                          else ...[
+                            // 아바타 + 이름 요약
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // 아바타들 (최대 3개)
+                                for (final f in _selectedFriends.where((f) => p.assignedToUserIds.contains(f['id'])).take(3)) ...[
+                                  const SizedBox(width: 4),
+                                  CircleAvatar(
+                                    radius: 8,
+                                    child: Text(f['name']!.characters.first, style: const TextStyle(fontSize: 10)),
+                                  ),
+                                ],
+                                if (p.assignedToUserIds.length > 3) ...[
+                                  const SizedBox(width: 4),
+                                  Text('+${p.assignedToUserIds.length - 3}', style: const TextStyle(fontSize: 12)),
+                                ],
+                                const SizedBox(width: 4),
+                                Text(
+                                  '(${_selectedFriends.where((f) => p.assignedToUserIds.contains(f['id']))
+                                      .map((f) => f['name'])
+                                      .take(2)
+                                      .join(', ')}${p.assignedToUserIds.length > 2 ? '…' : ''})',
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
+                          ],
                         ],
                       ),
                       avatar: const CircleAvatar(radius: 10, child: Icon(Icons.inventory_2, size: 12)),
