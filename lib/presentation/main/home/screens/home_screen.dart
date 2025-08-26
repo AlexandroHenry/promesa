@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/presentation/main/screens/main_wrapper_screen.dart';
-import 'package:flutter_app/presentation/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:promesa/presentation/main/screens/main_wrapper_screen.dart';
+import 'package:promesa/presentation/providers/auth_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/localization/localization.dart';
 
