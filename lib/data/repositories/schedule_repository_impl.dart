@@ -11,8 +11,65 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   Future<ScheduleEntity> createSchedule({
     required String title,
     required DateTime dateTime,
+    required ScheduleColor color,
+    String? colorHex,
+    required int lateFineAmount,
+    required String description,
+    required List<String> participantUserIds,
+    List<String>? preparations,
+    double? latitude,
+    double? longitude,
+    String? placeName,
   }) {
-    return dataSource.createSchedule(title: title, dateTime: dateTime);
+    return dataSource.createSchedule(
+      title: title,
+      dateTime: dateTime,
+      color: color,
+      colorHex: colorHex,
+      lateFineAmount: lateFineAmount,
+      description: description,
+      participantUserIds: participantUserIds,
+      preparations: preparations,
+      latitude: latitude,
+      longitude: longitude,
+      placeName: placeName,
+    );
+  }
+
+  @override
+  Future<List<ScheduleEntity>> getMySchedules() {
+    return dataSource.getMySchedules();
+  }
+
+  @override
+  Future<ScheduleEntity> updateSchedule({
+    required String scheduleId,
+    String? title,
+    DateTime? dateTime,
+    ScheduleColor? color,
+    String? colorHex,
+    int? lateFineAmount,
+    String? description,
+    List<String>? participantUserIds,
+    List<String>? preparations,
+    double? latitude,
+    double? longitude,
+    String? placeName,
+  }) {
+    return dataSource.updateSchedule(
+      scheduleId: scheduleId,
+      title: title,
+      dateTime: dateTime,
+      color: color,
+      colorHex: colorHex,
+      lateFineAmount: lateFineAmount,
+      description: description,
+      participantUserIds: participantUserIds,
+      preparations: preparations,
+      latitude: latitude,
+      longitude: longitude,
+      placeName: placeName,
+    );
   }
 }
 

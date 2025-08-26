@@ -44,11 +44,32 @@ class AddScheduleNotifier extends _$AddScheduleNotifier {
   Future<ScheduleEntity?> submit({
     required String title,
     required DateTime dateTime,
+    required ScheduleColor color,
+    String? colorHex,
+    required int lateFineAmount,
+    required String description,
+    required List<String> participantUserIds,
+    List<String>? preparations,
+    double? latitude,
+    double? longitude,
+    String? placeName,
   }) async {
     state = state.copyWith(isSubmitting: true, errorMessage: null);
     try {
       final usecase = ref.read(createScheduleUseCaseProvider);
-      final created = await usecase(title: title, dateTime: dateTime);
+      final created = await usecase(
+        title: title,
+        dateTime: dateTime,
+        color: color,
+        colorHex: colorHex,
+        lateFineAmount: lateFineAmount,
+        description: description,
+        participantUserIds: participantUserIds,
+        preparations: preparations,
+        latitude: latitude,
+        longitude: longitude,
+        placeName: placeName,
+      );
       state = state.copyWith(isSubmitting: false, created: created);
       return created;
     } catch (e) {

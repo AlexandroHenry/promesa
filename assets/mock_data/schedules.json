@@ -1,0 +1,48 @@
+[
+  {
+    "id": "s1",
+    "title": "스팀이소 Syncup",
+    "dateTime": "2025-08-26T10:00:00.000Z",
+    "color": 0,
+    "lateFineAmount": 5000,
+    "description": "주간 스탠드업",
+    "latitude": 37.5665,
+    "longitude": 126.9780,
+    "placeName": "서울 시청",
+    "participants": [
+      {"id": "u1", "name": "Alice", "isHost": true},
+      {"id": "u2", "name": "Bob"}
+    ]
+  },
+  {
+    "id": "s2",
+    "title": "내부 Weekly",
+    "dateTime": "2025-08-25T11:00:00.000Z",
+    "color": 2,
+    "lateFineAmount": 10000,
+    "description": "회의실 B8",
+    "latitude": 37.3943,
+    "longitude": 127.1107,
+    "placeName": "판교",
+    "participants": [
+      {"id": "u1", "name": "Alice", "isHost": true},
+      {"id": "u3", "name": "Carol"}
+    ]
+  },
+  {
+    "id": "s3",
+    "title": "프로젝트 킥오프",
+    "dateTime": "2025-09-01T09:30:00.000Z",
+    "color": 4,
+    "lateFineAmount": 0,
+    "description": "새 프로젝트",
+    "latitude": 35.1796,
+    "longitude": 129.0756,
+    "placeName": "부산",
+    "participants": [
+      {"id": "u2", "name": "Bob", "isHost": true},
+      {"id": "u1", "name": "Alice"}
+    ]
+  }
+]
+
