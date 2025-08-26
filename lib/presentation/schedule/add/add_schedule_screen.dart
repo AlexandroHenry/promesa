@@ -152,46 +152,82 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
   }
 
   Future<void> _assignPreparation(PreparationEntity prep) async {
-    final choice = await showModalBottomSheet<String>(
+    final chosen = await showModalBottomSheet<List<String>>(
       context: context,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
       builder: (context) {
+        final temp = {...prep.assignedToUserIds};
+        bool isAll = temp.isEmpty; // empty => ALL
         return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 12),
-              Text('"${prep.name}" 할당', style: const TextStyle(fontWeight: FontWeight.bold)),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.groups),
-                title: const Text('전체 (모두가 준비)'),
-                onTap: () => Navigator.pop(context, 'ALL'),
-              ),
-              for (final f in _selectedFriends)
-                ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Text(f['name']!),
-                  onTap: () => Navigator.pop(context, f['id']!),
-                ),
-              ListTile(
-                leading: const Icon(Icons.clear),
-                title: const Text('할당 해제'),
-                onTap: () => Navigator.pop(context, ''),
-              ),
-              const SizedBox(height: 8),
-            ],
+          child: StatefulBuilder(
+            builder: (context, setInner) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(height: 12),
+                  Text('"${prep.name}" 할당', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  const Divider(),
+                  CheckboxListTile(
+                    value: isAll,
+                    onChanged: (v) {
+                      setInner(() {
+                        isAll = v ?? false;
+                        if (isAll) temp.clear();
+                      });
+                    },
+                    secondary: const Icon(Icons.groups),
+                    title: const Text('전체 (모두가 준비)'),
+                  ),
+                  for (final f in _selectedFriends)
+                    CheckboxListTile(
+                      value: !isAll && temp.contains(f['id']),
+                      onChanged: (v) {
+                        setInner(() {
+                          if (v == true) {
+                            temp.add(f['id']!);
+                            isAll = false;
+                          } else {
+                            temp.remove(f['id']);
+                          }
+                        });
+                      },
+                      secondary: const Icon(Icons.person),
+                      title: Text(f['name']!),
+                    ),
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(onPressed: () => Navigator.pop(context, null), child: const Text('취소')),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (isAll) {
+                            Navigator.pop(context, <String>[]);
+                          } else {
+                            Navigator.pop(context, temp.toList());
+                          }
+                        },
+                        child: const Text('적용'),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                ],
+              );
+            },
           ),
         );
       },
     );
-    if (choice == null) return;
+    if (chosen == null) return;
     setState(() {
       final idx = _preparations.indexOf(prep);
       if (idx != -1) {
         _preparations[idx] = PreparationEntity(
           name: prep.name,
-          assignedToUserId: choice.isEmpty ? null : choice,
+          assignedToUserIds: chosen, // [] => ALL
         );
       }
     });
@@ -430,10 +466,10 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
                         children: [
                           Text(p.name),
                           const SizedBox(width: 6),
-                          if (p.assignedToUserId == 'ALL')
+                          if (p.assignedToUserIds.isEmpty)
                             const Text('(전체)', style: TextStyle(fontSize: 12))
-                          else if (p.assignedToUserId != null)
-                            Text('(${_selectedFriends.firstWhere((f) => f['id'] == p.assignedToUserId, orElse: () => {'name': '지정됨'})['name']})', style: const TextStyle(fontSize: 12)),
+                          else if (p.assignedToUserIds.isNotEmpty)
+                            Text('(${_selectedFriends.where((f) => p.assignedToUserIds.contains(f['id'])).map((f) => f['name']).join(', ')})', style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                       avatar: const CircleAvatar(radius: 10, child: Icon(Icons.inventory_2, size: 12)),

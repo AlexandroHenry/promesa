@@ -38,10 +38,18 @@ class MockScheduleDataSource {
       longitude: (map['longitude'] as num?)?.toDouble(),
       placeName: map['placeName'] as String?,
       preparations: ((map['preparations'] as List<dynamic>?) ?? [])
-          .map((e) => PreparationEntity(
-                name: e is String ? e : (e['name'] as String? ?? ''),
-                assignedToUserId: e is Map<String, dynamic> ? e['assignedToUserId'] as String? : null,
-              ))
+          .map((e) {
+            if (e is String) {
+              // string만 오면 전체
+              return PreparationEntity(name: e, assignedToUserIds: const []);
+            }
+            final m = e as Map<String, dynamic>;
+            final ids = (m['assignedToUserIds'] as List<dynamic>?)?.map((x) => x.toString()).toList() ?? const [];
+            return PreparationEntity(
+              name: m['name'] as String? ?? '',
+              assignedToUserIds: ids,
+            );
+          })
           .toList(),
       participants: ((map['participants'] as List<dynamic>?) ?? [])
           .map((p) => ParticipantEntity(
