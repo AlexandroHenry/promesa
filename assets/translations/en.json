@@ -1,0 +1,88 @@
+{
+  "app": {
+    "title": "Flutter App",
+    "description": "A new Flutter project with localization support"
+  },
+  "home": {
+    "welcome": "Hello, {name}!",
+    "welcomeGuest": "Hello, Guest!",
+    "haveNiceDay": "Have a nice day! 🌟",
+    "loginPrompt": "Log in to access more features.",
+    "loginButton": "Login",
+    "quickActions": "Quick Actions",
+    "detailInfo": "Detail Info",
+    "detailInfoSubtitle": "View more details",
+    "webPage": "Web Page",
+    "webPageSubtitle": "View external page",
+    "profileAction": "Profile",
+    "profileActionSubtitle": "View my information",
+    "loginAction": "Login",
+    "loginActionSubtitle": "Login to account",
+    "settingsAction": "Settings",
+    "settingsActionSubtitle": "Change app settings",
+    "imageViewer": "Image Viewer",
+    "imageViewerSubtitle": "View sample image"
+  },
+  "common": {
+    "ok": "OK",
+    "cancel": "Cancel",
+    "yes": "Yes",
+    "no": "No",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "update": "Update",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "settings": "Settings",
+    "home": "Home",
+    "profile": "Profile",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "forgotPassword": "Forgot Password?",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "rememberMe": "Remember me",
+    "loginSuccess": "Login successful",
+    "loginFailed": "Login failed",
+    "invalidCredentials": "Invalid email or password",
+    "accountCreated": "Account created successfully",
+    "resetPasswordSent": "Password reset email sent"
+  },
+  "validation": {
+    "required": "This field is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "phoneInvalid": "Please enter a valid phone number"
+  },
+  "network": {
+    "noConnection": "No internet connection",
+    "serverError": "Server error occurred",
+    "timeout": "Request timeout",
+    "unknownError": "Unknown error occurred",
+    "retry": "Tap to retry"
+  },
+  "permissions": {
+    "camera": "Camera access is required to take photos",
+    "storage": "Storage access is required to save files",
+    "location": "Location access is required for this feature",
+    "notifications": "Notification permission is required"
+  }
+}

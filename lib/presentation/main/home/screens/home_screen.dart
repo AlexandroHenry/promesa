@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/main/screens/main_wrapper_screen.dart';
 import 'package:flutter_app/presentation/providers/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/localization/localization.dart';
 
 /// 홈 화면
 class HomeScreen extends ConsumerWidget {
@@ -18,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         actionsPadding: const EdgeInsets.only(right: 16),
-        title: const Text('홈'),
+        title: Text(tr(AppTranslations.home)),
         actions: [
           // 로그인 상태에 따른 액션 버튼
           if (isAuthenticated)
@@ -39,23 +41,23 @@ class HomeScreen extends ConsumerWidget {
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'profile',
                   child: Row(
                     children: [
                       Icon(Icons.person),
                       SizedBox(width: 8),
-                      Text('프로필'),
+                      Text(tr(AppTranslations.profile)),
                     ],
                   ),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'logout',
                   child: Row(
                     children: [
                       Icon(Icons.logout),
                       SizedBox(width: 8),
-                      Text('로그아웃'),
+                      Text(tr(AppTranslations.logout)),
                     ],
                   ),
                 ),
@@ -118,7 +120,7 @@ class HomeScreen extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Hello, ${user.name}!',
+                                  tr(AppTranslations.welcome, namedArgs: {'name': user.name}),
                                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -136,19 +138,19 @@ class HomeScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        '오늘도 좋은 하루 되세요! 🌟',
+                        tr(AppTranslations.haveNiceDay),
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ] else ...[
                       Text(
-                        'Hello, Guest!',
+                        tr(AppTranslations.welcomeGuest),
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '로그인하면 더 많은 기능을 사용할 수 있습니다.',
+                        tr(AppTranslations.loginPrompt),
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Colors.grey.shade600,
                         ),
@@ -161,7 +163,7 @@ class HomeScreen extends ConsumerWidget {
                             context.router.push(const LoginRoute());
                           },
                           icon: const Icon(Icons.login),
-                          label: const Text('로그인하기'),
+                          label: Text(tr(AppTranslations.loginButton)),
                         ),
                       ),
                     ],
@@ -174,7 +176,7 @@ class HomeScreen extends ConsumerWidget {
             
             // 퀵 액션 버튼들
             Text(
-              '바로가기',
+              tr(AppTranslations.quickActions),
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -190,8 +192,8 @@ class HomeScreen extends ConsumerWidget {
                   // 홈 상세 화면으로 이동
                   _QuickActionCard(
                     icon: Icons.info,
-                    title: '상세 정보',
-                    subtitle: '더 자세한 내용 보기',
+                    title: tr(AppTranslations.detailInfo),
+                    subtitle: tr(AppTranslations.detailInfoSubtitle),
                     onTap: () {
                       context.router.push(const HomeDetailRoute());
                     },
@@ -200,8 +202,8 @@ class HomeScreen extends ConsumerWidget {
                   // 웹뷰 화면으로 이동 (공유 화면 예시)
                   _QuickActionCard(
                     icon: Icons.web,
-                    title: '웹 페이지',
-                    subtitle: '외부 페이지 보기',
+                    title: tr(AppTranslations.webPage),
+                    subtitle: tr(AppTranslations.webPageSubtitle),
                     onTap: () {
                       context.router.push(WebViewRoute(
                         url: 'https://flutter.dev',
@@ -213,8 +215,12 @@ class HomeScreen extends ConsumerWidget {
                   // 프로필로 이동 (로그인 상태에 따라 다르게)
                   _QuickActionCard(
                     icon: Icons.person,
-                    title: isAuthenticated ? '프로필' : '로그인',
-                    subtitle: isAuthenticated ? '내 정보 보기' : '계정에 로그인',
+                    title: isAuthenticated 
+                        ? tr(AppTranslations.profileAction) 
+                        : tr(AppTranslations.loginAction),
+                    subtitle: isAuthenticated 
+                        ? tr(AppTranslations.profileActionSubtitle) 
+                        : tr(AppTranslations.loginActionSubtitle),
                     onTap: () {
                       if (isAuthenticated) {
                         // MainWrapper의 탭 변경
@@ -229,8 +235,8 @@ class HomeScreen extends ConsumerWidget {
                   // 설정으로 이동
                   _QuickActionCard(
                     icon: Icons.settings,
-                    title: '설정',
-                    subtitle: '앱 설정 변경',
+                    title: tr(AppTranslations.settingsAction),
+                    subtitle: tr(AppTranslations.settingsActionSubtitle),
                     onTap: () {
                       // MainWrapper의 탭 변경
                       final mainWrapper = context.findAncestorStateOfType<MainWrapperScreenState>();
@@ -241,8 +247,8 @@ class HomeScreen extends ConsumerWidget {
                   // 이미지 뷰어
                   _QuickActionCard(
                     icon: Icons.image,
-                    title: '이미지 뷰어',
-                    subtitle: '샘플 이미지 보기',
+                    title: tr(AppTranslations.imageViewer),
+                    subtitle: tr(AppTranslations.imageViewerSubtitle),
                     onTap: () {
                       context.router.push(ImageViewerRoute(
                         imageUrl: 'https://picsum.photos/800/600',

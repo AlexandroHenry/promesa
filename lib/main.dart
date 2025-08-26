@@ -1,14 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'core/config/app_config.dart';
 import 'core/config/environment.dart';
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/utils/logger.dart';
+import 'core/localization/localization.dart';
 
 void main() async {
   await _initializeApp();
+}
+
+void _runAppWithLocalization() async {
+  // Initialize locale before running app
+  final initialLocale = await LocalizationService.initializeLocale();
+  
+  runApp(
+    EasyLocalization(
+      supportedLocales: AppLocales.supportedLocales,
+      path: 'assets/translations',
+      fallbackLocale: AppLocales.fallbackLocale,
+      startLocale: initialLocale,
+      child: ProviderScope(
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
 Future<void> _initializeApp() async {
@@ -25,11 +44,10 @@ Future<void> _initializeApp() async {
   // 의존성 주입 설정
   await setupDependencies();
 
-  runApp(
-    ProviderScope(
-      child: MyApp(),
-    ),
-  );
+  // EasyLocalization 초기화 후 앱 실행
+  await EasyLocalization.ensureInitialized();
+  
+  _runAppWithLocalization();
 }
 
 // dart-define에서 환경 읽기
@@ -69,6 +87,10 @@ class MyApp extends StatelessWidget {
       routerDelegate: _appRouter.delegate(),
       routeInformationParser: _appRouter.defaultRouteParser(),
       debugShowCheckedModeBanner: !AppConfig.environment.isProduction,
+      // Localization support
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       // 환경 배너 표시
       builder: (context, child) {
         if (AppConfig.showEnvironmentBanner && child != null) {

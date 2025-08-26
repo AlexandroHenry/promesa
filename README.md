@@ -307,4 +307,3 @@ MIT License
 🎉 **v2.0 개선사항**: 단일 main.dart 파일로 더 깔끔하고 표준적인 구조로 업그레이드!
 
 dart run build_runner build --delete-conflicting-outputs# Boilerplate
-# promesa

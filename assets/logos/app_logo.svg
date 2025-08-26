@@ -1,0 +1,5 @@
+<!-- Dummy SVG logo for testing Spider generation -->
+<svg width="120" height="40" viewBox="0 0 120 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="10" y="10" width="20" height="20" fill="currentColor" rx="4"/>
+  <text x="40" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="currentColor">Flutter App</text>
+</svg>
