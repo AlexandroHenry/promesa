@@ -67,7 +67,8 @@ node_modules/
 *.iml
 *.ipr
 *.iws
-.vscode/
+.vscode/*
+!.vscode/launch.json
 
 ############################################
 # Logs, Coverage, Misc

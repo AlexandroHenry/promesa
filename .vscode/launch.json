@@ -1,0 +1,67 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "🟢 Production",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define=ENVIRONMENT=production"
+            ],
+            "console": "debugConsole"
+        },
+        {
+            "name": "🟡 Staging",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define=ENVIRONMENT=staging"
+            ],
+            "console": "debugConsole"
+        },
+        {
+            "name": "🔵 Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define=ENVIRONMENT=debug"
+            ],
+            "console": "debugConsole"
+        },
+        {
+            "name": "🟣 Mock Data",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--dart-define=ENVIRONMENT=mock"
+            ],
+            "console": "debugConsole"
+        },
+        {
+            "name": "🟢 Production (Release)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=ENVIRONMENT=production"
+            ],
+            "console": "debugConsole"
+        },
+        {
+            "name": "🟡 Staging (Release)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "flutterMode": "release",
+            "args": [
+                "--dart-define=ENVIRONMENT=staging"
+            ],
+            "console": "debugConsole"
+        }
+    ]
+}
