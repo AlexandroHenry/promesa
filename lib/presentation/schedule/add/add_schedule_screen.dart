@@ -429,13 +429,11 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(p.name),
-                          if (p.assignedToUserId == 'ALL') ...[
-                            const SizedBox(width: 6),
-                            const Icon(Icons.groups, size: 14),
-                          ] else if (p.assignedToUserId != null) ...[
-                            const SizedBox(width: 6),
-                            const Icon(Icons.person, size: 14),
-                          ],
+                          const SizedBox(width: 6),
+                          if (p.assignedToUserId == 'ALL')
+                            const Text('(전체)', style: TextStyle(fontSize: 12))
+                          else if (p.assignedToUserId != null)
+                            Text('(${_selectedFriends.firstWhere((f) => f['id'] == p.assignedToUserId, orElse: () => {'name': '지정됨'})['name']})', style: const TextStyle(fontSize: 12)),
                         ],
                       ),
                       avatar: const CircleAvatar(radius: 10, child: Icon(Icons.inventory_2, size: 12)),
