@@ -1,0 +1,79 @@
+############################################
+# Flutter & Dart
+############################################
+.dart_tool/
+.pub/
+.pub-cache/
+.packages
+build/
+flutter_*.png
+lib/generated_plugin_registrant.dart
+
+############################################
+# Platform-specific (Android)
+############################################
+android/.gradle/
+android/local.properties
+**/android/**/.gradle/
+**/android/**/.cxx/
+**/android/**/.externalNativeBuild/
+**/android/**/captures/
+**/android/**/build/
+
+# Android signing keys (do not commit secrets)
+**/*.jks
+**/*.keystore
+
+############################################
+# Platform-specific (iOS)
+############################################
+ios/Flutter/.last_build_id
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/Flutter.podspec
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/ephemeral/
+ios/.symlinks/
+ios/Pods/
+**/ios/**/DerivedData/
+**/ios/**/build/
+
+############################################
+# Platform-specific (macOS)
+############################################
+macos/Flutter/ephemeral/
+macos/Flutter/flutter_export_environment.sh
+macos/Flutter/Flutter.podspec
+macos/.symlinks/
+macos/Pods/
+**/macos/**/DerivedData/
+**/macos/**/build/
+
+############################################
+# Platform-specific (Windows/Linux if present)
+############################################
+windows/Flutter/ephemeral/
+linux/flutter/ephemeral/
+
+############################################
+# Web / Node
+############################################
+node_modules/
+
+############################################
+# IDEs & Editors
+############################################
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+############################################
+# Logs, Coverage, Misc
+############################################
+*.log
+coverage/
+.DS_Store
+*.orig
+
