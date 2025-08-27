@@ -59,7 +59,7 @@ final createScheduleUseCaseProvider =
 typedef CreateScheduleUseCaseRef
     = AutoDisposeProviderRef<CreateScheduleUseCase>;
 String _$addScheduleNotifierHash() =>
-    r'f612819b9a511dece71872b89f2fff2b6a5d5144';
+    r'd44551007f78fbe46de0abecf00249d580f63119';
 
 /// See also [AddScheduleNotifier].
 @ProviderFor(AddScheduleNotifier)

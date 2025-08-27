@@ -25,7 +25,7 @@ final getMySchedulesUseCaseProvider =
 typedef GetMySchedulesUseCaseRef
     = AutoDisposeProviderRef<GetMySchedulesUseCase>;
 String _$scheduleListNotifierHash() =>
-    r'fa84080fbfc08683c37c048ff221f74e64fe1122';
+    r'e2f3904cf3b175856416f3bedbac32235f35d209';
 
 /// See also [ScheduleListNotifier].
 @ProviderFor(ScheduleListNotifier)

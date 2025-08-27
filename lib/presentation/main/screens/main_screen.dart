@@ -61,6 +61,10 @@ class MainScreen extends StatelessWidget {
             label: '홈',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: '장소',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: '검색',
           ),

@@ -10,6 +10,7 @@ import '../../presentation/onboarding/screens/onboarding_screen.dart';
 import '../../presentation/main/screens/main_wrapper_screen.dart';
 import '../../presentation/main/home/screens/home_screen.dart';
 import '../../presentation/main/settings/screens/settings_screen.dart';
+import '../../presentation/main/map/screens/map_screen.dart';
 import '../../presentation/main/settings/screens/notification_settings_screen.dart';
 
 // Shared Screens
@@ -55,6 +56,11 @@ class AppRouter extends _$AppRouter {
     AutoRoute(
       page: SearchRoute.page,
       path: '/search',
+    ),
+    
+    AutoRoute(
+      page: MapRoute.page,
+      path: '/map',
     ),
     
     AutoRoute(
@@ -186,6 +192,16 @@ class SearchPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+@RoutePage()
+class MapPage extends StatelessWidget {
+  const MapPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MapScreen();
   }
 }
 

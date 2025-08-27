@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import '../home/screens/home_screen.dart';
+import '../map/screens/map_screen.dart';
+import '../search/screens/search_screen.dart';
 import '../settings/screens/settings_screen.dart';
 import '../../../core/router/app_router.dart';
 
@@ -18,7 +20,8 @@ class MainWrapperScreenState extends State<MainWrapperScreen> {
 
   final List<Widget> _screens = [
     const HomeScreen(),
-    const _SearchScreen(),
+    const MapScreen(),
+    const SearchScreen(),
     const _ProfileScreen(),
     const SettingsScreen(),
   ];
@@ -49,6 +52,10 @@ class MainWrapperScreenState extends State<MainWrapperScreen> {
             label: '홈',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: '장소',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: '검색',
           ),
@@ -67,26 +74,7 @@ class MainWrapperScreenState extends State<MainWrapperScreen> {
 }
 
 // 임시 검색 화면
-class _SearchScreen extends StatelessWidget {
-  const _SearchScreen();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('검색')),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search, size: 64),
-            SizedBox(height: 16),
-            Text('검색 화면 (구현 예정)'),
-          ],
-        ),
-      ),
-    );
-  }
-}
+// (삭제됨) 검색 임시 화면
 
 // 임시 프로필 화면
 class _ProfileScreen extends StatelessWidget {
