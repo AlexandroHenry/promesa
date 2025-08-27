@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../../data/datasources/schedule/mock_schedule_datasource.dart';
 import '../../../../data/repositories/schedule_repository_impl.dart';
 import '../../../../domain/entities/schedule_entity.dart';
+import '../../../../domain/entities/late_fine_entity.dart';
 import '../../../../domain/repositories/schedule_repository.dart';
 import '../../../../domain/entities/preparation_entity.dart';
 import '../../../../domain/usecases/schedule/create_schedule_usecase.dart';
@@ -48,6 +49,7 @@ class AddScheduleNotifier extends _$AddScheduleNotifier {
     required ScheduleColor color,
     String? colorHex,
     required int lateFineAmount,
+    LateFineEntity? lateFine,
     required String description,
     required List<String> participantUserIds,
     List<PreparationEntity>? preparations,
@@ -64,6 +66,7 @@ class AddScheduleNotifier extends _$AddScheduleNotifier {
         color: color,
         colorHex: colorHex,
         lateFineAmount: lateFineAmount,
+        lateFine: lateFine,
         description: description,
         participantUserIds: participantUserIds,
         preparations: preparations,

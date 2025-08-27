@@ -2,31 +2,42 @@
   {
     "id": "s1",
     "title": "스팀이소 Syncup",
-    "dateTime": "2025-08-26T10:00:00.000Z",
+    "dateTime": "2025-08-28T10:00:00.000Z",
     "color": 0,
+    "colorHex": "#4285F4",
     "lateFineAmount": 5000,
-    "description": "주간 스탠드업",
+    "description": "주간 스탠드업 미팅",
     "latitude": 37.5665,
     "longitude": 126.9780,
     "placeName": "서울 시청",
     "participants": [
-      {"id": "u1", "name": "Alice", "isHost": true},
-      {"id": "u2", "name": "Bob"}
+      {"id": "u1", "name": "김철수", "isHost": true},
+      {"id": "u2", "name": "박영희"}
+    ],
+    "preparations": [
+      {"name": "노트북", "assignedToUserIds": []},
+      {"name": "보고서", "assignedToUserIds": ["u1"]}
     ]
   },
   {
     "id": "s2",
     "title": "내부 Weekly",
-    "dateTime": "2025-08-25T11:00:00.000Z",
+    "dateTime": "2025-08-29T14:00:00.000Z",
     "color": 2,
+    "colorHex": "#34A853",
     "lateFineAmount": 10000,
-    "description": "회의실 B8",
-    "latitude": 37.3943,
-    "longitude": 127.1107,
-    "placeName": "판교",
+    "description": "주간 회의 - 회의실 B8",
+    "latitude": 37.4449,
+    "longitude": 127.1385,
+    "placeName": "네이버 1784",
     "participants": [
-      {"id": "u1", "name": "Alice", "isHost": true},
-      {"id": "u3", "name": "Carol"}
+      {"id": "u1", "name": "김철수", "isHost": true},
+      {"id": "u3", "name": "이민수"},
+      {"id": "u4", "name": "최지은"}
+    ],
+    "preparations": [
+      {"name": "발표자료", "assignedToUserIds": ["u3"]},
+      {"name": "회의록", "assignedToUserIds": ["u4"]}
     ]
   },
   {
@@ -34,14 +45,95 @@
     "title": "프로젝트 킥오프",
     "dateTime": "2025-09-01T09:30:00.000Z",
     "color": 4,
+    "colorHex": "#9C27B0",
     "lateFineAmount": 0,
-    "description": "새 프로젝트",
+    "description": "새 프로젝트 시작 미팅",
     "latitude": 35.1796,
     "longitude": 129.0756,
-    "placeName": "부산",
+    "placeName": "부산역",
     "participants": [
-      {"id": "u2", "name": "Bob", "isHost": true},
-      {"id": "u1", "name": "Alice"}
+      {"id": "u2", "name": "박영희", "isHost": true},
+      {"id": "u1", "name": "김철수"},
+      {"id": "u5", "name": "정수현"}
+    ],
+    "preparations": [
+      {"name": "프로젝트 계획서", "assignedToUserIds": []},
+      {"name": "개발 환경", "assignedToUserIds": ["u1", "u5"]}
+    ]
+  },
+  {
+    "id": "s4",
+    "title": "클라이언트 미팅",
+    "dateTime": "2025-08-30T16:00:00.000Z",
+    "color": 3,
+    "colorHex": "#FF9800",
+    "lateFineAmount": 15000,
+    "lateFine": {
+      "type": 0,
+      "amount": 2000,
+      "interval": 5
+    },
+    "description": "클라이언트 요구사항 논의",
+    "latitude": 37.5172,
+    "longitude": 127.0473,
+    "placeName": "강남역",
+    "participants": [
+      {"id": "u1", "name": "김철수", "isHost": true},
+      {"id": "u2", "name": "박영희"},
+      {"id": "u6", "name": "김민준"}
+    ],
+    "preparations": [
+      {"name": "제안서", "assignedToUserIds": ["u1"]},
+      {"name": "데모", "assignedToUserIds": ["u2", "u6"]}
+    ]
+  },
+  {
+    "id": "s5",
+    "title": "점심 모임",
+    "dateTime": "2025-08-28T12:30:00.000Z",
+    "color": 5,
+    "colorHex": "#F44336",
+    "lateFineAmount": 2000,
+    "description": "팀 점심 식사",
+    "latitude": 37.5512,
+    "longitude": 126.9882,
+    "placeName": "홍대입구역",
+    "participants": [
+      {"id": "u3", "name": "이민수", "isHost": true},
+      {"id": "u4", "name": "최지은"},
+      {"id": "u5", "name": "정수현"},
+      {"id": "u6", "name": "김민준"}
+    ],
+    "preparations": [
+      {"name": "예약 확인", "assignedToUserIds": ["u3"]}
+    ]
+  },
+  {
+    "id": "s6",
+    "title": "워크숍",
+    "dateTime": "2025-09-05T13:00:00.000Z",
+    "color": 1,
+    "colorHex": "#00BCD4",
+    "lateFineAmount": 20000,
+    "lateFine": {
+      "type": 1,
+      "amount": 10000,
+      "interval": 1
+    },
+    "description": "기술 워크숍 - 새로운 기술 스택 소개",
+    "latitude": 37.3816,
+    "longitude": 127.1202,
+    "placeName": "판교 테크노밸리",
+    "participants": [
+      {"id": "u5", "name": "정수현", "isHost": true},
+      {"id": "u1", "name": "김철수"},
+      {"id": "u3", "name": "이민수"},
+      {"id": "u6", "name": "김민준"}
+    ],
+    "preparations": [
+      {"name": "발표 자료", "assignedToUserIds": ["u5"]},
+      {"name": "실습 환경", "assignedToUserIds": []},
+      {"name": "간식", "assignedToUserIds": ["u1", "u3"]}
     ]
   }
 ]

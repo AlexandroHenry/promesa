@@ -1,5 +1,6 @@
 import 'participant_entity.dart';
 import 'preparation_entity.dart';
+import 'late_fine_entity.dart';
 
 enum ScheduleColor {
   blue,
@@ -16,7 +17,8 @@ class ScheduleEntity {
   final DateTime dateTime;
   final ScheduleColor color;
   final String? colorHex;
-  final int lateFineAmount;
+  final int lateFineAmount; // 기존 호환성을 위해 유지
+  final LateFineEntity? lateFine; // 새로운 벌금 시스템
   final String description;
   final List<ParticipantEntity> participants;
   final double? latitude;
@@ -31,6 +33,7 @@ class ScheduleEntity {
     this.color = ScheduleColor.blue,
     this.colorHex,
     this.lateFineAmount = 0,
+    this.lateFine,
     this.description = '',
     this.participants = const [],
     this.latitude,

@@ -1,0 +1,26 @@
+{
+  "attendances": [
+    {
+      "scheduleId": "s1",
+      "userId": "u1",
+      "status": 2,
+      "checkInTime": "2025-08-28T09:55:00.000Z",
+      "lateMinutes": 0,
+      "fineAmount": 0,
+      "checkInLatitude": 37.5665,
+      "checkInLongitude": 126.9780,
+      "distanceFromVenue": 25.5
+    },
+    {
+      "scheduleId": "s2",
+      "userId": "u1",
+      "status": 2,
+      "checkInTime": "2025-08-29T14:15:00.000Z",
+      "lateMinutes": 15,
+      "fineAmount": 3000,
+      "checkInLatitude": 37.4449,
+      "checkInLongitude": 127.1385,
+      "distanceFromVenue": 45.0
+    }
+  ]
+}

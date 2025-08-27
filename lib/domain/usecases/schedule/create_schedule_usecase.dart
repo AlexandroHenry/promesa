@@ -1,4 +1,5 @@
 import '../../entities/schedule_entity.dart';
+import '../../entities/late_fine_entity.dart';
 import '../../repositories/schedule_repository.dart';
 import '../../entities/preparation_entity.dart';
 
@@ -13,6 +14,7 @@ class CreateScheduleUseCase {
     required ScheduleColor color,
     String? colorHex,
     required int lateFineAmount,
+    LateFineEntity? lateFine,
     required String description,
     required List<String> participantUserIds,
     List<PreparationEntity>? preparations,
@@ -26,6 +28,7 @@ class CreateScheduleUseCase {
       color: color,
       colorHex: colorHex,
       lateFineAmount: lateFineAmount,
+      lateFine: lateFine,
       description: description,
       participantUserIds: participantUserIds,
       preparations: preparations,

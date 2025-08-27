@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '00_state/add_schedule_provider.dart';
 import '../../../domain/entities/schedule_entity.dart';
+import '../../../domain/entities/late_fine_entity.dart';
 import '../../../domain/entities/preparation_entity.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:convert';
@@ -20,6 +21,7 @@ class AddScheduleScreen extends ConsumerStatefulWidget {
 class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _fineController = TextEditingController();
+  final TextEditingController _fineIntervalController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _colorHexController = TextEditingController(text: '#4285F4');
@@ -29,6 +31,17 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
   LatLng? _selectedLatLng;
   final List<Map<String, String>> _selectedFriends = [];
   final List<PreparationEntity> _preparations = [];
+  
+  // 벌금 관련 상태
+  LateFineType _fineType = LateFineType.fixed;
+
+  @override
+  void initState() {
+    super.initState();
+    // 벌금 관련 텍스트 필드 변경 시 UI 업데이트
+    _fineController.addListener(() => setState(() {}));
+    _fineIntervalController.addListener(() => setState(() {}));
+  }
   
   String _colorToHex(Color color) {
     return '#'
@@ -49,7 +62,10 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
   @override
   void dispose() {
     _titleController.dispose();
+    _fineController.removeListener(() => setState(() {}));
+    _fineIntervalController.removeListener(() => setState(() {}));
     _fineController.dispose();
+    _fineIntervalController.dispose();
     _descController.dispose();
     _placeController.dispose();
     _colorHexController.dispose();
@@ -91,49 +107,56 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16))),
       builder: (context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          initialChildSize: 0.7,
-          maxChildSize: 0.95,
-          minChildSize: 0.5,
-          builder: (_, controller) {
-            return Column(
-              children: [
-                const SizedBox(height: 12),
-                Container(height: 4, width: 36, decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2))),
-                const SizedBox(height: 12),
-                const Text('친구 선택', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                const SizedBox(height: 12),
-                Expanded(
-                  child: ListView.builder(
-                    controller: controller,
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      final u = users[index];
-                      final id = u['id'].toString();
-                      final name = u['name'] as String? ?? 'Unknown';
-                      final checked = selectedIds.contains(id);
-                      return CheckboxListTile(
-                        value: checked,
-                        onChanged: (v) {
-                          setState(() {
-                            if (v == true) {
-                              if (_selectedFriends.indexWhere((e) => e['id'] == id) == -1) {
-                                _selectedFriends.add({'id': id, 'name': name});
-                              }
-                            } else {
-                              _selectedFriends.removeWhere((e) => e['id'] == id);
-                            }
-                          });
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return DraggableScrollableSheet(
+              expand: false,
+              initialChildSize: 0.7,
+              maxChildSize: 0.95,
+              minChildSize: 0.5,
+              builder: (_, controller) {
+                return Column(
+                  children: [
+                    const SizedBox(height: 12),
+                    Container(height: 4, width: 36, decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(2))),
+                    const SizedBox(height: 12),
+                    const Text('친구 선택', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                    const SizedBox(height: 12),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: controller,
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          final u = users[index];
+                          final id = u['id'].toString();
+                          final name = u['name'] as String? ?? 'Unknown';
+                          final checked = selectedIds.contains(id);
+                          return CheckboxListTile(
+                            value: checked,
+                            onChanged: (v) {
+                              setModalState(() {
+                                if (v == true) {
+                                  if (!selectedIds.contains(id)) {
+                                    selectedIds.add(id);
+                                    _selectedFriends.add({'id': id, 'name': name});
+                                  }
+                                } else {
+                                  selectedIds.remove(id);
+                                  _selectedFriends.removeWhere((e) => e['id'] == id);
+                                }
+                              });
+                              setState(() {}); // 메인 화면도 업데이트
+                            },
+                            title: Text(name),
+                            secondary: CircleAvatar(child: Text(name.characters.first)),
+                          );
                         },
-                        title: Text(name),
-                        secondary: CircleAvatar(child: Text(name.characters.first)),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 12),
-              ],
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                );
+              },
             );
           },
         );
@@ -290,6 +313,23 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
     });
   }
 
+  /// 현재 벌금 설정에 대한 미리보기 텍스트 생성
+  String _getFinePreviewText() {
+    final fine = int.tryParse(_fineController.text.trim()) ?? 0;
+    if (fine <= 0) return '벌금 없음';
+    
+    switch (_fineType) {
+      case LateFineType.fixed:
+        return '지각 시 ${fine.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}원';
+      case LateFineType.perMinute:
+        final interval = int.tryParse(_fineIntervalController.text.trim()) ?? 1;
+        return '${interval}분당 ${fine.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}원';
+      case LateFineType.perHour:
+        final interval = int.tryParse(_fineIntervalController.text.trim()) ?? 1;
+        return '${interval}시간당 ${fine.toString().replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => '${m[1]},')}원';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -418,10 +458,121 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
               ),
               const SizedBox(height: 12),
 
-              TextField(
-                controller: _fineController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(labelText: 'Late fine amount (₩)'),
+              // 벌금 타입 선택
+              Text(
+                '지각 벌금',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              
+              // 벌금 타입 라디오 버튼
+              Column(
+                children: [
+                  RadioListTile<LateFineType>(
+                    title: const Text('전체 고정금액'),
+                    subtitle: const Text('지각하면 고정 금액'),
+                    value: LateFineType.fixed,
+                    groupValue: _fineType,
+                    onChanged: (value) {
+                      setState(() {
+                        _fineType = value!;
+                      });
+                    },
+                  ),
+                  RadioListTile<LateFineType>(
+                    title: const Text('분당 벌금'),
+                    subtitle: const Text('지정한 분마다 벌금 추가'),
+                    value: LateFineType.perMinute,
+                    groupValue: _fineType,
+                    onChanged: (value) {
+                      setState(() {
+                        _fineType = value!;
+                      });
+                    },
+                  ),
+                  RadioListTile<LateFineType>(
+                    title: const Text('시간당 벌금'),
+                    subtitle: const Text('지정한 시간마다 벌금 추가'),
+                    value: LateFineType.perHour,
+                    groupValue: _fineType,
+                    onChanged: (value) {
+                      setState(() {
+                        _fineType = value!;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              
+              // 벌금 설정 입력
+              if (_fineType == LateFineType.fixed) ...[
+                TextField(
+                  controller: _fineController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: '벌금 금액 (₩)',
+                    hintText: '예: 5000',
+                  ),
+                ),
+              ] else ...[
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextField(
+                        controller: _fineIntervalController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: _fineType == LateFineType.perMinute ? '분 간격' : '시간 간격',
+                          hintText: _fineType == LateFineType.perMinute ? '예: 5' : '예: 1',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      flex: 3,
+                      child: TextField(
+                        controller: _fineController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: '벌금 금액 (₩)',
+                          hintText: '예: 1000',
+                          helperText: _fineType == LateFineType.perMinute 
+                              ? '${_fineIntervalController.text.isEmpty ? 'N' : _fineIntervalController.text}분당'
+                              : '${_fineIntervalController.text.isEmpty ? 'N' : _fineIntervalController.text}시간당',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+              const SizedBox(height: 8),
+              
+              // 벌금 미리보기
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.blue.shade200),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline, color: Colors.blue.shade600, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        _getFinePreviewText(),
+                        style: TextStyle(
+                          color: Colors.blue.shade700,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 12),
 
@@ -559,12 +710,43 @@ class _AddScheduleScreenState extends ConsumerState<AddScheduleScreen> {
                               final fine = int.tryParse(_fineController.text.trim()) ?? 0;
                               final description = _descController.text.trim();
                               final participants = _selectedFriends.map((e) => e['id']!).toList();
+                              
+                              // 벌금 엔티티 생성
+                              LateFineEntity? lateFineEntity;
+                              if (fine > 0) {
+                                switch (_fineType) {
+                                  case LateFineType.fixed:
+                                    lateFineEntity = LateFineEntity(
+                                      type: LateFineType.fixed,
+                                      amount: fine,
+                                    );
+                                    break;
+                                  case LateFineType.perMinute:
+                                    final interval = int.tryParse(_fineIntervalController.text.trim()) ?? 1;
+                                    lateFineEntity = LateFineEntity(
+                                      type: LateFineType.perMinute,
+                                      amount: fine,
+                                      interval: interval,
+                                    );
+                                    break;
+                                  case LateFineType.perHour:
+                                    final interval = int.tryParse(_fineIntervalController.text.trim()) ?? 1;
+                                    lateFineEntity = LateFineEntity(
+                                      type: LateFineType.perHour,
+                                      amount: fine,
+                                      interval: interval,
+                                    );
+                                    break;
+                                }
+                              }
+                              
                               final created = await ref.read(addScheduleNotifierProvider.notifier).submit(
                                 title: title,
                                 dateTime: _selectedDateTime!,
                                 color: _color,
                                 colorHex: _colorHexController.text.trim().isEmpty ? null : _colorHexController.text.trim(),
-                                lateFineAmount: fine,
+                                lateFineAmount: fine, // 기존 호환성을 위해 유지
+                                lateFine: lateFineEntity, // 새로운 벌금 시스템
                                 description: description,
                                 participantUserIds: participants,
                                 preparations: _preparations,

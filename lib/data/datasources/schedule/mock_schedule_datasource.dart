@@ -6,6 +6,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import '../../../domain/entities/participant_entity.dart';
 import '../../../domain/entities/preparation_entity.dart';
 import '../../../domain/entities/schedule_entity.dart';
+import '../../../domain/entities/late_fine_entity.dart';
 
 class MockScheduleDataSource {
   final List<ScheduleEntity> _schedules = [];
@@ -26,6 +27,11 @@ class MockScheduleDataSource {
   }
 
   ScheduleEntity _fromJson(Map<String, dynamic> map) {
+    LateFineEntity? lateFine;
+    if (map['lateFine'] != null) {
+      lateFine = LateFineEntity.fromJson(map['lateFine'] as Map<String, dynamic>);
+    }
+
     return ScheduleEntity(
       id: map['id'] as String,
       title: map['title'] as String,
@@ -33,6 +39,7 @@ class MockScheduleDataSource {
       color: ScheduleColor.values[(map['color'] as int?) ?? 0],
       colorHex: map['colorHex'] as String?,
       lateFineAmount: map['lateFineAmount'] as int? ?? 0,
+      lateFine: lateFine,
       description: map['description'] as String? ?? '',
       latitude: (map['latitude'] as num?)?.toDouble(),
       longitude: (map['longitude'] as num?)?.toDouble(),
@@ -70,6 +77,7 @@ class MockScheduleDataSource {
     required ScheduleColor color,
     String? colorHex,
     required int lateFineAmount,
+    LateFineEntity? lateFine,
     required String description,
     required List<String> participantUserIds,
     List<PreparationEntity>? preparations,
@@ -86,6 +94,7 @@ class MockScheduleDataSource {
       color: color,
       colorHex: colorHex,
       lateFineAmount: lateFineAmount,
+      lateFine: lateFine,
       description: description,
       preparations: preparations ?? const [],
       latitude: latitude,
@@ -113,6 +122,7 @@ class MockScheduleDataSource {
     ScheduleColor? color,
     String? colorHex,
     int? lateFineAmount,
+    LateFineEntity? lateFine,
     String? description,
     List<String>? participantUserIds,
     List<PreparationEntity>? preparations,
@@ -134,6 +144,7 @@ class MockScheduleDataSource {
       color: color ?? prev.color,
       colorHex: colorHex ?? prev.colorHex,
       lateFineAmount: lateFineAmount ?? prev.lateFineAmount,
+      lateFine: lateFine ?? prev.lateFine,
       description: description ?? prev.description,
       preparations: preparations ?? prev.preparations,
       latitude: latitude ?? prev.latitude,

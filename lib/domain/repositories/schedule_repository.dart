@@ -1,4 +1,5 @@
 import '../entities/schedule_entity.dart';
+import '../entities/late_fine_entity.dart';
 import '../entities/preparation_entity.dart';
 
 abstract class ScheduleRepository {
@@ -8,6 +9,7 @@ abstract class ScheduleRepository {
     required ScheduleColor color,
     String? colorHex,
     required int lateFineAmount,
+    LateFineEntity? lateFine,
     required String description,
     required List<String> participantUserIds,
     List<PreparationEntity>? preparations,
@@ -25,6 +27,7 @@ abstract class ScheduleRepository {
     ScheduleColor? color,
     String? colorHex,
     int? lateFineAmount,
+    LateFineEntity? lateFine,
     String? description,
     List<String>? participantUserIds,
     List<PreparationEntity>? preparations,

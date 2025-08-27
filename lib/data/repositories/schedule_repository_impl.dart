@@ -1,5 +1,6 @@
 import '../../domain/entities/preparation_entity.dart';
 import '../../domain/entities/schedule_entity.dart';
+import '../../domain/entities/late_fine_entity.dart';
 import '../../domain/repositories/schedule_repository.dart';
 import '../datasources/schedule/mock_schedule_datasource.dart';
 
@@ -15,6 +16,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     required ScheduleColor color,
     String? colorHex,
     required int lateFineAmount,
+    LateFineEntity? lateFine,
     required String description,
     required List<String> participantUserIds,
     List<PreparationEntity>? preparations,
@@ -28,6 +30,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       color: color,
       colorHex: colorHex,
       lateFineAmount: lateFineAmount,
+      lateFine: lateFine,
       description: description,
       participantUserIds: participantUserIds,
       preparations: preparations,
@@ -50,6 +53,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     ScheduleColor? color,
     String? colorHex,
     int? lateFineAmount,
+    LateFineEntity? lateFine,
     String? description,
     List<String>? participantUserIds,
     List<PreparationEntity>? preparations,
@@ -64,6 +68,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       color: color,
       colorHex: colorHex,
       lateFineAmount: lateFineAmount,
+      lateFine: lateFine,
       description: description,
       participantUserIds: participantUserIds,
       preparations: preparations,
