@@ -1,12 +1,15 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+// Domain entities
+import '../../domain/entities/schedule_entity.dart';
+
 // Auth Screens
 import '../../presentation/auth/screens/splash_screen.dart';
 import '../../presentation/auth/screens/login_screen.dart';
 import '../../presentation/onboarding/screens/onboarding_screen.dart';
 
-// Main Screens  
+// Main Screens
 import '../../presentation/main/screens/main_wrapper_screen.dart';
 import '../../presentation/main/home/screens/home_screen.dart';
 import '../../presentation/main/settings/screens/settings_screen.dart';
@@ -27,98 +30,46 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
     // ==================== Auth Routes ====================
-    AutoRoute(
-      page: SplashRoute.page,
-      path: '/',
-      initial: true,
-    ),
-    
-    AutoRoute(
-      page: OnboardingRoute.page,
-      path: '/onboarding',
-    ),
-    
-    AutoRoute(
-      page: LoginRoute.page,
-      path: '/login',
-    ),
-    
+    AutoRoute(page: SplashRoute.page, path: '/', initial: true),
+
+    AutoRoute(page: OnboardingRoute.page, path: '/onboarding'),
+
+    AutoRoute(page: LoginRoute.page, path: '/login'),
+
     // ==================== Main Routes ====================
-    AutoRoute(
-      page: MainWrapperRoute.page,
-      path: '/main',
-    ),
-    
+    AutoRoute(page: MainWrapperRoute.page, path: '/main'),
+
     // ==================== Tab Routes ====================
-    AutoRoute(
-      page: HomeRoute.page,
-      path: '/home',
-    ),
-    
-    AutoRoute(
-      page: SearchRoute.page,
-      path: '/search',
-    ),
-    
-    AutoRoute(
-      page: MapRoute.page,
-      path: '/map',
-    ),
-    
-    AutoRoute(
-      page: ProfileRoute.page,
-      path: '/profile',
-    ),
-    
-    AutoRoute(
-      page: SettingsRoute.page,
-      path: '/settings',
-    ),
-    
+    AutoRoute(page: HomeRoute.page, path: '/home'),
+
+    AutoRoute(page: SearchRoute.page, path: '/search'),
+
+    AutoRoute(page: MapRoute.page, path: '/map'),
+
+    AutoRoute(page: ProfileRoute.page, path: '/profile'),
+
+    AutoRoute(page: SettingsRoute.page, path: '/settings'),
+
     // ==================== Sub Routes ====================
-    AutoRoute(
-      page: HomeDetailRoute.page,
-      path: '/home-detail',
-    ),
-    
-    AutoRoute(
-      page: ProfileEditRoute.page,
-      path: '/profile-edit',
-    ),
-    
-    AutoRoute(
-      page: NotificationSettingsRoute.page,
-      path: '/notification-settings',
-    ),
-    
-    AutoRoute(
-      page: PrivacySettingsRoute.page,
-      path: '/privacy-settings',
-    ),
-    
-    AutoRoute(
-      page: AccountSettingsRoute.page,
-      path: '/account-settings',
-    ),
-    
+    AutoRoute(page: HomeDetailRoute.page, path: '/home-detail'),
+
+    AutoRoute(page: ProfileEditRoute.page, path: '/profile-edit'),
+
+    AutoRoute(page: NotificationSettingsRoute.page, path: '/notification-settings'),
+
+    AutoRoute(page: PrivacySettingsRoute.page, path: '/privacy-settings'),
+
+    AutoRoute(page: AccountSettingsRoute.page, path: '/account-settings'),
+
     // ==================== Shared Routes ====================
-    AutoRoute(
-      page: WebViewRoute.page,
-      path: '/webview',
-    ),
-    
-    AutoRoute(
-      page: ImageViewerRoute.page,
-      path: '/image-viewer',
-    ),
+    AutoRoute(page: WebViewRoute.page, path: '/webview'),
+
+    AutoRoute(page: ImageViewerRoute.page, path: '/image-viewer'),
 
     // ==================== Schedule Routes ====================
-    AutoRoute(
-      page: AddScheduleRoute.page,
-      path: '/add-schedule',
-    ),
-    AutoRoute(page: ScheduleDetailPage.page, path: '/schedule-detail'),
-    AutoRoute(page: EditSchedulePage.page, path: '/edit-schedule'),
+    AutoRoute(page: AddScheduleRoute.page, path: '/add-schedule'),
+    AutoRoute(page: ScheduleDetailRoute.page, path: '/schedule-detail'),
+    AutoRoute(page: EditScheduleRoute.page, path: '/edit-schedule'),
   ];
 }
 
@@ -188,11 +139,7 @@ class SearchPage extends StatelessWidget {
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.search, size: 64),
-            SizedBox(height: 16),
-            Text('검색 화면 (구현 예정)'),
-          ],
+          children: [Icon(Icons.search, size: 64), SizedBox(height: 16), Text('검색 화면 (구현 예정)')],
         ),
       ),
     );
@@ -231,15 +178,9 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 50,
-              child: Icon(Icons.person, size: 50),
-            ),
+            CircleAvatar(radius: 50, child: Icon(Icons.person, size: 50)),
             SizedBox(height: 16),
-            Text(
-              '사용자 이름',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            Text('사용자 이름', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             Text('user@example.com'),
             SizedBox(height: 16),
@@ -273,11 +214,7 @@ class HomeDetailPage extends StatelessWidget {
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.info, size: 64),
-            SizedBox(height: 16),
-            Text('홈 상세 화면 (구현 예정)'),
-          ],
+          children: [Icon(Icons.info, size: 64), SizedBox(height: 16), Text('홈 상세 화면 (구현 예정)')],
         ),
       ),
     );
@@ -296,9 +233,7 @@ class ProfileEditPage extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('저장되었습니다')),
-              );
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('저장되었습니다')));
               context.router.pop();
             },
             child: const Text('저장'),
@@ -308,11 +243,7 @@ class ProfileEditPage extends StatelessWidget {
       body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.edit, size: 64),
-            SizedBox(height: 16),
-            Text('프로필 편집 화면 (구현 예정)'),
-          ],
+          children: [Icon(Icons.edit, size: 64), SizedBox(height: 16), Text('프로필 편집 화면 (구현 예정)')],
         ),
       ),
     );
@@ -378,39 +309,27 @@ class AccountSettingsPage extends StatelessWidget {
 class WebViewPage extends StatelessWidget {
   final String? url;
   final String? title;
-  
-  const WebViewPage({
-    super.key,
-    this.url,
-    this.title,
-  });
+
+  const WebViewPage({super.key, this.url, this.title});
 
   @override
   Widget build(BuildContext context) {
     if (url == null || url!.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: const Text('오류')),
-        body: const Center(
-          child: Text('잘못된 URL입니다.'),
-        ),
+        body: const Center(child: Text('잘못된 URL입니다.')),
       );
     }
-    
-    return WebViewScreen(
-      url: url!,
-      title: title,
-    );
+
+    return WebViewScreen(url: url!, title: title);
   }
 }
 
 @RoutePage()
 class ImageViewerPage extends StatelessWidget {
   final String? imageUrl;
-  
-  const ImageViewerPage({
-    super.key,
-    this.imageUrl,
-  });
+
+  const ImageViewerPage({super.key, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -425,12 +344,10 @@ class ImageViewerPage extends StatelessWidget {
         child: imageUrl != null && imageUrl!.isNotEmpty
             ? Image.network(
                 imageUrl!,
-                errorBuilder: (context, error, stackTrace) => 
-                    const Text('이미지를 불러올 수 없습니다', 
-                          style: TextStyle(color: Colors.white)),
+                errorBuilder: (context, error, stackTrace) =>
+                    const Text('이미지를 불러올 수 없습니다', style: TextStyle(color: Colors.white)),
               )
-            : const Text('잘못된 이미지 URL입니다',
-                  style: TextStyle(color: Colors.white)),
+            : const Text('잘못된 이미지 URL입니다', style: TextStyle(color: Colors.white)),
       ),
     );
   }
@@ -447,5 +364,15 @@ class AddSchedulePage extends StatelessWidget {
   }
 }
 
-// Wrapper pages are unnecessary; the routed pages are defined in their own files.
+// Schedule Pages
+@RoutePage()
+class AddSchedulePage extends StatelessWidget {
+  const AddSchedulePage({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return const AddScheduleScreen();
+  }
+}
+
+// Wrapper pages are unnecessary; the routed pages are defined in their own files.

@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:promesa/core/router/app_router.gr.dart';
-
+import 'package:promesa/core/router/app_router.dart';
 import '../../../domain/entities/schedule_entity.dart';
 import '../../../domain/entities/participant_entity.dart';
 import '../../providers/auth_provider.dart';
