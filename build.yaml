@@ -9,7 +9,7 @@ targets:
       # AutoRoute 코드 생성
       auto_route_generator:
         generate_for:
-          - lib/core/router/**
+          - lib/**
       
       # Retrofit 코드 생성
       retrofit_generator:

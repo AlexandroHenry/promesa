@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:promesa/presentation/providers/auth_provider.dart';
+// removed unused: auth_provider
 import '../../../../core/router/app_router.dart';
 import '../../../schedule/list/schedule_list_provider.dart';
 import '../../../../domain/entities/schedule_entity.dart';

@@ -17,6 +17,8 @@ import '../../presentation/main/settings/screens/notification_settings_screen.da
 import '../../presentation/shared/screens/webview_screen.dart';
 // Schedule Screens
 import '../../presentation/schedule/add/add_schedule_screen.dart';
+import '../../presentation/schedule/detail/schedule_detail_screen.dart';
+import '../../presentation/schedule/edit/edit_schedule_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -115,6 +117,8 @@ class AppRouter extends _$AppRouter {
       page: AddScheduleRoute.page,
       path: '/add-schedule',
     ),
+    AutoRoute(page: ScheduleDetailPage.page, path: '/schedule-detail'),
+    AutoRoute(page: EditSchedulePage.page, path: '/edit-schedule'),
   ];
 }
 
@@ -442,4 +446,6 @@ class AddSchedulePage extends StatelessWidget {
     return const AddScheduleScreen();
   }
 }
+
+// Wrapper pages are unnecessary; the routed pages are defined in their own files.
 
