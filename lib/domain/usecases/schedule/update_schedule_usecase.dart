@@ -1,6 +1,7 @@
 import '../../entities/schedule_entity.dart';
 import '../../repositories/schedule_repository.dart';
 import '../../entities/preparation_entity.dart';
+import '../../entities/late_fine_entity.dart';
 
 class UpdateScheduleUseCase {
   final ScheduleRepository repository;
@@ -14,6 +15,7 @@ class UpdateScheduleUseCase {
     ScheduleColor? color,
     String? colorHex,
     int? lateFineAmount,
+    LateFineEntity? lateFine,
     String? description,
     List<String>? participantUserIds,
     List<PreparationEntity>? preparations,
@@ -28,6 +30,7 @@ class UpdateScheduleUseCase {
       color: color,
       colorHex: colorHex,
       lateFineAmount: lateFineAmount,
+      lateFine: lateFine,
       description: description,
       participantUserIds: participantUserIds,
       preparations: preparations,
