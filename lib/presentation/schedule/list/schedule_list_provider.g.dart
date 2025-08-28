@@ -24,8 +24,26 @@ final getMySchedulesUseCaseProvider =
 
 typedef GetMySchedulesUseCaseRef
     = AutoDisposeProviderRef<GetMySchedulesUseCase>;
+String _$getSchedulesByMonthUseCaseHash() =>
+    r'ff66926c84f8fc5d3a474d3faa9331be0892a7bc';
+
+/// See also [getSchedulesByMonthUseCase].
+@ProviderFor(getSchedulesByMonthUseCase)
+final getSchedulesByMonthUseCaseProvider =
+    AutoDisposeProvider<GetSchedulesByMonthUseCase>.internal(
+  getSchedulesByMonthUseCase,
+  name: r'getSchedulesByMonthUseCaseProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getSchedulesByMonthUseCaseHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetSchedulesByMonthUseCaseRef
+    = AutoDisposeProviderRef<GetSchedulesByMonthUseCase>;
 String _$scheduleListNotifierHash() =>
-    r'e2f3904cf3b175856416f3bedbac32235f35d209';
+    r'7a5118452f823054be151c80a653770f4473580a';
 
 /// See also [ScheduleListNotifier].
 @ProviderFor(ScheduleListNotifier)

@@ -115,6 +115,17 @@ class MockScheduleDataSource {
     return List.unmodifiable(_schedules);
   }
 
+  Future<List<ScheduleEntity>> getSchedulesByMonth({
+    required int year,
+    required int month,
+  }) async {
+    await _ensureSeeded();
+    await Future.delayed(const Duration(milliseconds: 200));
+    return _schedules
+        .where((s) => s.dateTime.year == year && s.dateTime.month == month)
+        .toList();
+  }
+
   Future<ScheduleEntity> updateSchedule({
     required String scheduleId,
     String? title,

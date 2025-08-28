@@ -20,6 +20,11 @@ abstract class ScheduleRepository {
 
   Future<List<ScheduleEntity>> getMySchedules();
 
+  Future<List<ScheduleEntity>> getSchedulesByMonth({
+    required int year,
+    required int month,
+  });
+
   Future<ScheduleEntity> updateSchedule({
     required String scheduleId,
     String? title,

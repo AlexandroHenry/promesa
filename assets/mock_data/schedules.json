@@ -135,6 +135,32 @@
       {"name": "실습 환경", "assignedToUserIds": []},
       {"name": "간식", "assignedToUserIds": ["u1", "u3"]}
     ]
+  },
+  {
+    "id": "s7",
+    "title": "호스트 브런치",
+    "dateTime": "2025-08-28T11:00:00.000Z",
+    "color": 0,
+    "colorHex": "#2196F3",
+    "lateFineAmount": 3000,
+    "lateFine": {
+      "type": 0,
+      "amount": 500,
+      "interval": 5
+    },
+    "description": "팀 브런치 모임 (내가 호스트)",
+    "latitude": 37.5665,
+    "longitude": 126.978,
+    "placeName": "시청 근처 카페",
+    "participants": [
+      {"id": "u1", "name": "김철수", "isHost": true},
+      {"id": "u2", "name": "박영희"},
+      {"id": "u4", "name": "최지은"}
+    ],
+    "preparations": [
+      {"name": "예약", "assignedToUserIds": ["u1"]},
+      {"name": "공유 드라이브", "assignedToUserIds": []}
+    ]
   }
 ]
 

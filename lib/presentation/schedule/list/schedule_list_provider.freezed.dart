@@ -20,6 +20,8 @@ mixin _$ScheduleListState {
   List<ScheduleEntity> get items => throw _privateConstructorUsedError;
   ScheduleFilter get filter => throw _privateConstructorUsedError;
   ScheduleView get view => throw _privateConstructorUsedError;
+  DateTime? get focusedMonth => throw _privateConstructorUsedError;
+  List<String> get loadedMonths => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -38,6 +40,8 @@ abstract class $ScheduleListStateCopyWith<$Res> {
       List<ScheduleEntity> items,
       ScheduleFilter filter,
       ScheduleView view,
+      DateTime? focusedMonth,
+      List<String> loadedMonths,
       String? errorMessage});
 }
 
@@ -58,6 +62,8 @@ class _$ScheduleListStateCopyWithImpl<$Res, $Val extends ScheduleListState>
     Object? items = null,
     Object? filter = null,
     Object? view = null,
+    Object? focusedMonth = freezed,
+    Object? loadedMonths = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -77,6 +83,14 @@ class _$ScheduleListStateCopyWithImpl<$Res, $Val extends ScheduleListState>
           ? _value.view
           : view // ignore: cast_nullable_to_non_nullable
               as ScheduleView,
+      focusedMonth: freezed == focusedMonth
+          ? _value.focusedMonth
+          : focusedMonth // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      loadedMonths: null == loadedMonths
+          ? _value.loadedMonths
+          : loadedMonths // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -98,6 +112,8 @@ abstract class _$$ScheduleListStateImplCopyWith<$Res>
       List<ScheduleEntity> items,
       ScheduleFilter filter,
       ScheduleView view,
+      DateTime? focusedMonth,
+      List<String> loadedMonths,
       String? errorMessage});
 }
 
@@ -116,6 +132,8 @@ class __$$ScheduleListStateImplCopyWithImpl<$Res>
     Object? items = null,
     Object? filter = null,
     Object? view = null,
+    Object? focusedMonth = freezed,
+    Object? loadedMonths = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_$ScheduleListStateImpl(
@@ -135,6 +153,14 @@ class __$$ScheduleListStateImplCopyWithImpl<$Res>
           ? _value.view
           : view // ignore: cast_nullable_to_non_nullable
               as ScheduleView,
+      focusedMonth: freezed == focusedMonth
+          ? _value.focusedMonth
+          : focusedMonth // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      loadedMonths: null == loadedMonths
+          ? _value._loadedMonths
+          : loadedMonths // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -151,8 +177,11 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
       final List<ScheduleEntity> items = const [],
       this.filter = ScheduleFilter.all,
       this.view = ScheduleView.day,
+      this.focusedMonth,
+      final List<String> loadedMonths = const [],
       this.errorMessage})
-      : _items = items;
+      : _items = items,
+        _loadedMonths = loadedMonths;
 
   @override
   @JsonKey()
@@ -173,11 +202,22 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
   @JsonKey()
   final ScheduleView view;
   @override
+  final DateTime? focusedMonth;
+  final List<String> _loadedMonths;
+  @override
+  @JsonKey()
+  List<String> get loadedMonths {
+    if (_loadedMonths is EqualUnmodifiableListView) return _loadedMonths;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_loadedMonths);
+  }
+
+  @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'ScheduleListState(isLoading: $isLoading, items: $items, filter: $filter, view: $view, errorMessage: $errorMessage)';
+    return 'ScheduleListState(isLoading: $isLoading, items: $items, filter: $filter, view: $view, focusedMonth: $focusedMonth, loadedMonths: $loadedMonths, errorMessage: $errorMessage)';
   }
 
   @override
@@ -190,13 +230,24 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
             const DeepCollectionEquality().equals(other._items, _items) &&
             (identical(other.filter, filter) || other.filter == filter) &&
             (identical(other.view, view) || other.view == view) &&
+            (identical(other.focusedMonth, focusedMonth) ||
+                other.focusedMonth == focusedMonth) &&
+            const DeepCollectionEquality()
+                .equals(other._loadedMonths, _loadedMonths) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading,
-      const DeepCollectionEquality().hash(_items), filter, view, errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      const DeepCollectionEquality().hash(_items),
+      filter,
+      view,
+      focusedMonth,
+      const DeepCollectionEquality().hash(_loadedMonths),
+      errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -212,6 +263,8 @@ abstract class _ScheduleListState implements ScheduleListState {
       final List<ScheduleEntity> items,
       final ScheduleFilter filter,
       final ScheduleView view,
+      final DateTime? focusedMonth,
+      final List<String> loadedMonths,
       final String? errorMessage}) = _$ScheduleListStateImpl;
 
   @override
@@ -222,6 +275,10 @@ abstract class _ScheduleListState implements ScheduleListState {
   ScheduleFilter get filter;
   @override
   ScheduleView get view;
+  @override
+  DateTime? get focusedMonth;
+  @override
+  List<String> get loadedMonths;
   @override
   String? get errorMessage;
   @override

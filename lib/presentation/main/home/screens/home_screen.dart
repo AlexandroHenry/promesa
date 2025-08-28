@@ -174,14 +174,19 @@ class _DayView extends StatelessWidget {
                     runSpacing: 8,
                     children: [
                       for (final s in hourItems)
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                          decoration: BoxDecoration(
-                            color: _colorFor(s.color, context).withOpacity(0.15),
-                            border: Border.all(color: _colorFor(s.color, context)),
-                            borderRadius: BorderRadius.circular(8),
+                        GestureDetector(
+                          onTap: () {
+                            context.router.push(ScheduleDetailRoute(schedule: s));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: _colorFor(s.color, context).withOpacity(0.15),
+                              border: Border.all(color: _colorFor(s.color, context)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(s.title),
                           ),
-                          child: Text(s.title),
                         ),
                     ],
                   ),
@@ -247,73 +252,121 @@ class _WeekView extends StatelessWidget {
   }
 }
 
-class _MonthView extends StatelessWidget {
+class _MonthView extends ConsumerStatefulWidget {
   final List<ScheduleEntity> items;
   const _MonthView({required this.items});
 
   @override
-  Widget build(BuildContext context) {
+  ConsumerState<_MonthView> createState() => _MonthViewState();
+}
+
+class _MonthViewState extends ConsumerState<_MonthView> {
+  late final PageController _pageController;
+  late final DateTime _baseMonth;
+  static const int _initialPage = 1000;
+
+  @override
+  void initState() {
+    super.initState();
     final now = DateTime.now();
-    final first = DateTime(now.year, now.month, 1);
-    final firstWeekday = (first.weekday % 7); // Sunday=0
-    final daysInMonth = DateTime(now.year, now.month + 1, 0).day;
-    final totalCells = firstWeekday + daysInMonth;
-    final rows = (totalCells / 7).ceil();
-    return Column(
-      children: [
-        Row(
-          children: const [
-            Expanded(child: Center(child: Text('Sun'))),
-            Expanded(child: Center(child: Text('Mon'))),
-            Expanded(child: Center(child: Text('Tue'))),
-            Expanded(child: Center(child: Text('Wed'))),
-            Expanded(child: Center(child: Text('Thu'))),
-            Expanded(child: Center(child: Text('Fri'))),
-            Expanded(child: Center(child: Text('Sat'))),
+    _baseMonth = DateTime(now.year, now.month, 1);
+    _pageController = PageController(initialPage: _initialPage);
+  }
+
+  DateTime _monthForPage(int page) {
+    final offset = page - _initialPage;
+    return DateTime(_baseMonth.year, _baseMonth.month + offset, 1);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PageView.builder(
+      scrollDirection: Axis.vertical,
+      controller: _pageController,
+      onPageChanged: (page) {
+        final m = _monthForPage(page);
+        ref.read(scheduleListNotifierProvider.notifier).setFocusedMonth(m.year, m.month);
+      },
+      itemBuilder: (context, page) {
+        final month = _monthForPage(page);
+        final first = DateTime(month.year, month.month, 1);
+        final firstWeekday = (first.weekday % 7);
+        final daysInMonth = DateTime(month.year, month.month + 1, 0).day;
+        final totalCells = firstWeekday + daysInMonth;
+        final rows = (totalCells / 7).ceil();
+        final monthItems = widget.items
+            .where((e) => e.dateTime.year == month.year && e.dateTime.month == month.month)
+            .toList();
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Text('${month.year}.${month.month.toString().padLeft(2, '0')}',
+                  style: const TextStyle(fontWeight: FontWeight.bold)),
+            ),
+            Row(
+              children: const [
+                Expanded(child: Center(child: Text('Sun'))),
+                Expanded(child: Center(child: Text('Mon'))),
+                Expanded(child: Center(child: Text('Tue'))),
+                Expanded(child: Center(child: Text('Wed'))),
+                Expanded(child: Center(child: Text('Thu'))),
+                Expanded(child: Center(child: Text('Fri'))),
+                Expanded(child: Center(child: Text('Sat'))),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Expanded(
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 7,
+                  childAspectRatio: 0.8,
+                ),
+                itemCount: rows * 7,
+                itemBuilder: (context, index) {
+                  final dayNum = index - firstWeekday + 1;
+                  if (dayNum < 1 || dayNum > daysInMonth) {
+                    return const SizedBox.shrink();
+                  }
+                  final day = DateTime(month.year, month.month, dayNum);
+                  final dayItems = monthItems
+                      .where((e) => e.dateTime.day == day.day)
+                      .toList();
+                  return Container(
+                    margin: const EdgeInsets.all(2),
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('$dayNum', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 4),
+                        for (final s in dayItems.take(2))
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 2),
+                            child: Row(
+                              children: [
+                                Container(width: 6, height: 6, decoration: BoxDecoration(color: _colorFor(s.color, context), shape: BoxShape.circle)),
+                                const SizedBox(width: 4),
+                                Expanded(child: Text(s.title, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11))),
+                              ],
+                            ),
+                          ),
+                        if (dayItems.length > 2)
+                          Text('+${dayItems.length - 2}', style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
-        ),
-        const SizedBox(height: 8),
-        Expanded(
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 7, childAspectRatio: 0.9),
-            itemCount: rows * 7,
-            itemBuilder: (context, index) {
-              final dayNum = index - firstWeekday + 1;
-              if (dayNum < 1 || dayNum > daysInMonth) {
-                return const SizedBox.shrink();
-              }
-              final day = DateTime(now.year, now.month, dayNum);
-              final dayItems = items.where((e) => e.dateTime.year == day.year && e.dateTime.month == day.month && e.dateTime.day == day.day).toList();
-              return Container(
-                margin: const EdgeInsets.all(2),
-                padding: const EdgeInsets.all(6),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('$dayNum', style: const TextStyle(fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 4),
-                    for (final s in dayItems.take(3))
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 2),
-                        child: Row(
-                          children: [
-                            Container(width: 6, height: 6, decoration: BoxDecoration(color: _colorFor(s.color, context), shape: BoxShape.circle)),
-                            const SizedBox(width: 4),
-                            Expanded(child: Text(s.title, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 11))),
-                          ],
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 }

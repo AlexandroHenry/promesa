@@ -46,6 +46,14 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   }
 
   @override
+  Future<List<ScheduleEntity>> getSchedulesByMonth({
+    required int year,
+    required int month,
+  }) {
+    return dataSource.getSchedulesByMonth(year: year, month: month);
+  }
+
+  @override
   Future<ScheduleEntity> updateSchedule({
     required String scheduleId,
     String? title,

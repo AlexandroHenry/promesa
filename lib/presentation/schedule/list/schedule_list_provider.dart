@@ -3,6 +3,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../domain/entities/schedule_entity.dart';
 import '../../../domain/usecases/schedule/get_my_schedules_usecase.dart';
+import '../../../domain/usecases/schedule/get_schedules_by_month_usecase.dart';
 import '../../schedule/add/00_state/add_schedule_provider.dart';
 
 part 'schedule_list_provider.freezed.dart';
@@ -18,6 +19,8 @@ class ScheduleListState with _$ScheduleListState {
     @Default([]) List<ScheduleEntity> items,
     @Default(ScheduleFilter.all) ScheduleFilter filter,
     @Default(ScheduleView.day) ScheduleView view,
+    DateTime? focusedMonth,
+    @Default([]) List<String> loadedMonths,
     String? errorMessage,
   }) = _ScheduleListState;
 }
@@ -29,12 +32,23 @@ GetMySchedulesUseCase getMySchedulesUseCase(GetMySchedulesUseCaseRef ref) {
 }
 
 @riverpod
+GetSchedulesByMonthUseCase getSchedulesByMonthUseCase(
+    GetSchedulesByMonthUseCaseRef ref) {
+  final repo = ref.read(scheduleRepositoryProvider);
+  return GetSchedulesByMonthUseCase(repo);
+}
+
+@riverpod
 class ScheduleListNotifier extends _$ScheduleListNotifier {
   @override
   ScheduleListState build() {
     // initial state then refresh
-    Future.microtask(refresh);
-    return const ScheduleListState();
+    final now = DateTime.now();
+    final firstOfMonth = DateTime(now.year, now.month, 1);
+    Future.microtask(() async {
+      await ensureMonthLoaded(now.year, now.month);
+    });
+    return ScheduleListState(focusedMonth: firstOfMonth);
   }
 
   Future<void> refresh() async {
@@ -65,6 +79,38 @@ class ScheduleListNotifier extends _$ScheduleListNotifier {
       case ScheduleFilter.all:
         return s.items;
     }
+  }
+
+  String _monthKey(int year, int month) => '$year-$month';
+
+  Future<void> ensureMonthLoaded(int year, int month) async {
+    final key = _monthKey(year, month);
+    if (state.loadedMonths.contains(key)) return;
+    state = state.copyWith(isLoading: true);
+    try {
+      final usecase = ref.read(getSchedulesByMonthUseCaseProvider);
+      final list = await usecase(year: year, month: month);
+      // merge unique by id
+      final Map<String, ScheduleEntity> byId = {
+        for (final s in state.items) s.id: s,
+      };
+      for (final s in list) {
+        byId[s.id] = s;
+      }
+      final updated = byId.values.toList();
+      state = state.copyWith(
+        isLoading: false,
+        items: updated,
+        loadedMonths: [...state.loadedMonths, key],
+      );
+    } catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
+    }
+  }
+
+  Future<void> setFocusedMonth(int year, int month) async {
+    state = state.copyWith(focusedMonth: DateTime(year, month, 1));
+    await ensureMonthLoaded(year, month);
   }
 }
 
