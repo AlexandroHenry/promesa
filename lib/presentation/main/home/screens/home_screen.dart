@@ -141,15 +141,16 @@ Color _colorFor(ScheduleColor color, BuildContext context) {
   }
 }
 
-class _DayView extends StatelessWidget {
+class _DayView extends ConsumerWidget {
   final List<ScheduleEntity> items;
   const _DayView({required this.items});
 
   @override
-  Widget build(BuildContext context) {
-    final now = DateTime.now();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(scheduleListNotifierProvider);
+    final target = state.focusedDay ?? DateTime.now();
     final todayItems = items
-        .where((e) => e.dateTime.year == now.year && e.dateTime.month == now.month && e.dateTime.day == now.day)
+        .where((e) => e.dateTime.year == target.year && e.dateTime.month == target.month && e.dateTime.day == target.day)
         .toList();
     return ListView.builder(
       itemCount: 24,
@@ -199,12 +200,12 @@ class _DayView extends StatelessWidget {
   }
 }
 
-class _WeekView extends StatelessWidget {
+class _WeekView extends ConsumerWidget {
   final List<ScheduleEntity> items;
   const _WeekView({required this.items});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final now = DateTime.now();
     final startOfWeek = now.subtract(Duration(days: now.weekday % 7));
     final days = [for (int i = 0; i < 7; i++) startOfWeek.add(Duration(days: i))];
@@ -224,7 +225,10 @@ class _WeekView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${day.month}/${day.day}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  GestureDetector(
+                    onTap: () => ref.read(scheduleListNotifierProvider.notifier).goToDay(day),
+                    child: Text('${day.month}/${day.day}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                  ),
                   const SizedBox(height: 8),
                   Expanded(
                     child: ListView(
@@ -371,36 +375,93 @@ class _MonthViewState extends ConsumerState<_MonthView> {
   }
 }
 
-class _YearView extends StatelessWidget {
+class _YearView extends ConsumerStatefulWidget {
   final List<ScheduleEntity> items;
   const _YearView({required this.items});
 
   @override
-  Widget build(BuildContext context) {
-    final now = DateTime.now();
-    return GridView.builder(
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 1.2),
-      itemCount: 12,
-      itemBuilder: (context, index) {
-        final month = index + 1;
-        final monthItems = items.where((e) => e.dateTime.year == now.year && e.dateTime.month == month).length;
-        return Container(
-          margin: const EdgeInsets.all(8),
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('${now.year} - $month', style: const TextStyle(fontWeight: FontWeight.bold)),
-              const Spacer(),
-              Text('Events: $monthItems'),
-            ],
+  ConsumerState<_YearView> createState() => _YearViewState();
+}
+
+class _YearViewState extends ConsumerState<_YearView> {
+  int _year = DateTime.now().year;
+
+  Future<void> _pickYear(BuildContext context) async {
+    final years = [for (int y = _year - 10; y <= _year + 10; y++) y];
+    final selected = await showModalBottomSheet<int>(
+      context: context,
+      builder: (context) {
+        return SafeArea(
+          child: ListView.builder(
+            itemCount: years.length,
+            itemBuilder: (context, i) {
+              final y = years[i];
+              return ListTile(
+                title: Text(y.toString()),
+                onTap: () => Navigator.pop(context, y),
+              );
+            },
           ),
         );
       },
+    );
+    if (selected != null) {
+      setState(() => _year = selected);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.chevron_left),
+                onPressed: () => setState(() => _year--),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: () => _pickYear(context),
+                  child: Text(_year.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.chevron_right),
+                onPressed: () => setState(() => _year++),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3, childAspectRatio: 1.2),
+            itemCount: 12,
+            itemBuilder: (context, index) {
+              final month = index + 1;
+              final monthItems = widget.items.where((e) => e.dateTime.year == _year && e.dateTime.month == month).length;
+              return Container(
+                margin: const EdgeInsets.all(8),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('$_year - $month', style: const TextStyle(fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    Text('Events: $monthItems'),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

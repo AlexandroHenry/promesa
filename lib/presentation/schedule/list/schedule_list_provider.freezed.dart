@@ -21,6 +21,7 @@ mixin _$ScheduleListState {
   ScheduleFilter get filter => throw _privateConstructorUsedError;
   ScheduleView get view => throw _privateConstructorUsedError;
   DateTime? get focusedMonth => throw _privateConstructorUsedError;
+  DateTime? get focusedDay => throw _privateConstructorUsedError;
   List<String> get loadedMonths => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
@@ -41,6 +42,7 @@ abstract class $ScheduleListStateCopyWith<$Res> {
       ScheduleFilter filter,
       ScheduleView view,
       DateTime? focusedMonth,
+      DateTime? focusedDay,
       List<String> loadedMonths,
       String? errorMessage});
 }
@@ -63,6 +65,7 @@ class _$ScheduleListStateCopyWithImpl<$Res, $Val extends ScheduleListState>
     Object? filter = null,
     Object? view = null,
     Object? focusedMonth = freezed,
+    Object? focusedDay = freezed,
     Object? loadedMonths = null,
     Object? errorMessage = freezed,
   }) {
@@ -86,6 +89,10 @@ class _$ScheduleListStateCopyWithImpl<$Res, $Val extends ScheduleListState>
       focusedMonth: freezed == focusedMonth
           ? _value.focusedMonth
           : focusedMonth // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      focusedDay: freezed == focusedDay
+          ? _value.focusedDay
+          : focusedDay // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       loadedMonths: null == loadedMonths
           ? _value.loadedMonths
@@ -113,6 +120,7 @@ abstract class _$$ScheduleListStateImplCopyWith<$Res>
       ScheduleFilter filter,
       ScheduleView view,
       DateTime? focusedMonth,
+      DateTime? focusedDay,
       List<String> loadedMonths,
       String? errorMessage});
 }
@@ -133,6 +141,7 @@ class __$$ScheduleListStateImplCopyWithImpl<$Res>
     Object? filter = null,
     Object? view = null,
     Object? focusedMonth = freezed,
+    Object? focusedDay = freezed,
     Object? loadedMonths = null,
     Object? errorMessage = freezed,
   }) {
@@ -157,6 +166,10 @@ class __$$ScheduleListStateImplCopyWithImpl<$Res>
           ? _value.focusedMonth
           : focusedMonth // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      focusedDay: freezed == focusedDay
+          ? _value.focusedDay
+          : focusedDay // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
       loadedMonths: null == loadedMonths
           ? _value._loadedMonths
           : loadedMonths // ignore: cast_nullable_to_non_nullable
@@ -178,6 +191,7 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
       this.filter = ScheduleFilter.all,
       this.view = ScheduleView.day,
       this.focusedMonth,
+      this.focusedDay,
       final List<String> loadedMonths = const [],
       this.errorMessage})
       : _items = items,
@@ -203,6 +217,8 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
   final ScheduleView view;
   @override
   final DateTime? focusedMonth;
+  @override
+  final DateTime? focusedDay;
   final List<String> _loadedMonths;
   @override
   @JsonKey()
@@ -217,7 +233,7 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
 
   @override
   String toString() {
-    return 'ScheduleListState(isLoading: $isLoading, items: $items, filter: $filter, view: $view, focusedMonth: $focusedMonth, loadedMonths: $loadedMonths, errorMessage: $errorMessage)';
+    return 'ScheduleListState(isLoading: $isLoading, items: $items, filter: $filter, view: $view, focusedMonth: $focusedMonth, focusedDay: $focusedDay, loadedMonths: $loadedMonths, errorMessage: $errorMessage)';
   }
 
   @override
@@ -232,6 +248,8 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
             (identical(other.view, view) || other.view == view) &&
             (identical(other.focusedMonth, focusedMonth) ||
                 other.focusedMonth == focusedMonth) &&
+            (identical(other.focusedDay, focusedDay) ||
+                other.focusedDay == focusedDay) &&
             const DeepCollectionEquality()
                 .equals(other._loadedMonths, _loadedMonths) &&
             (identical(other.errorMessage, errorMessage) ||
@@ -246,6 +264,7 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
       filter,
       view,
       focusedMonth,
+      focusedDay,
       const DeepCollectionEquality().hash(_loadedMonths),
       errorMessage);
 
@@ -264,6 +283,7 @@ abstract class _ScheduleListState implements ScheduleListState {
       final ScheduleFilter filter,
       final ScheduleView view,
       final DateTime? focusedMonth,
+      final DateTime? focusedDay,
       final List<String> loadedMonths,
       final String? errorMessage}) = _$ScheduleListStateImpl;
 
@@ -277,6 +297,8 @@ abstract class _ScheduleListState implements ScheduleListState {
   ScheduleView get view;
   @override
   DateTime? get focusedMonth;
+  @override
+  DateTime? get focusedDay;
   @override
   List<String> get loadedMonths;
   @override

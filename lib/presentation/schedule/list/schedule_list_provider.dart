@@ -20,6 +20,7 @@ class ScheduleListState with _$ScheduleListState {
     @Default(ScheduleFilter.all) ScheduleFilter filter,
     @Default(ScheduleView.day) ScheduleView view,
     DateTime? focusedMonth,
+    DateTime? focusedDay,
     @Default([]) List<String> loadedMonths,
     String? errorMessage,
   }) = _ScheduleListState;
@@ -48,7 +49,7 @@ class ScheduleListNotifier extends _$ScheduleListNotifier {
     Future.microtask(() async {
       await ensureMonthLoaded(now.year, now.month);
     });
-    return ScheduleListState(focusedMonth: firstOfMonth);
+    return ScheduleListState(focusedMonth: firstOfMonth, focusedDay: now);
   }
 
   Future<void> refresh() async {
@@ -111,6 +112,16 @@ class ScheduleListNotifier extends _$ScheduleListNotifier {
   Future<void> setFocusedMonth(int year, int month) async {
     state = state.copyWith(focusedMonth: DateTime(year, month, 1));
     await ensureMonthLoaded(year, month);
+  }
+
+  Future<void> setFocusedDay(DateTime date) async {
+    await ensureMonthLoaded(date.year, date.month);
+    state = state.copyWith(focusedDay: date);
+  }
+
+  Future<void> goToDay(DateTime date) async {
+    await setFocusedDay(date);
+    setView(ScheduleView.day);
   }
 }
 
