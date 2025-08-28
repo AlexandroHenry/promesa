@@ -124,3 +124,129 @@ final attendance = AttendanceEntity(
 - **정확도 개선**: Beacon, WiFi 등 추가 위치 기술 활용
 
 모든 기능이 완벽하게 구현되어 즉시 사용할 수 있습니다! 🎯✨
+## 🕒 출석 시간 제한
+
+### 출석 시작 시간
+- **출석 가능 시간**: 일정 시작 30분 전부터
+- **시간 체크**: 출석 시작 버튼 클릭 시 자동 검증
+- **대기 메시지**: 출석 불가능 시 남은 시간 표시
+
+### UI 표시
+```dart
+// 출석 시간 상태 카드
+Container(
+  decoration: BoxDecoration(
+    color: canStartAttendance ? Colors.green[50] : Colors.orange[50],
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Row(
+    children: [
+      Icon(canStartAttendance ? Icons.check_circle : Icons.access_time),
+      Text(timeMessage), // "30분 후 출석 가능" 등
+    ],
+  ),
+)
+```
+
+## 🏆 도착 순위 시스템
+
+### 순위 계산
+1. **출석 시간순 정렬**: 체크인 시간 기준으로 1등, 2등, 3등...
+2. **성공한 출석만**: `AttendanceStatus.success`인 경우만 순위 집계
+3. **실시간 업데이트**: 새로운 출석 발생 시 순위 자동 재계산
+
+### 순위 표시
+- **🥇 1등**: 금색 배지와 특별 메시지
+- **🥈 2등**: 은색 배지 
+- **🥉 3등**: 동색 배지
+- **4등 이상**: 숫자 표시
+
+### 순위 정보 UI
+```dart
+// 개인 순위 카드
+Container(
+  decoration: BoxDecoration(
+    color: Colors.blue[50],
+    borderRadius: BorderRadius.circular(12),
+  ),
+  child: Column(
+    children: [
+      Text('🎯 도착 순위'),
+      Text(_getRankingText(userRanking)), // "🥇 1등으로 도착!"
+      Text('4/8명 출석'), // 통계 정보
+    ],
+  ),
+)
+```
+
+## 📊 상세 순위 바텀시트
+
+### 전체 순위 목록
+- **참가자별 순위**: 도착 순서, 이름, 호스트 표시
+- **출석 시간**: HH:MM 형식으로 표시  
+- **지각 정보**: "정시 도착" / "5분 지각"
+- **호스트 표시**: ⭐ 아이콘으로 구분
+
+### 순위 통계
+- **출석률**: 전체 대비 출석한 인원 비율
+- **정시 출석률**: 지각하지 않은 인원 비율
+- **지각/결석 현황**: 실시간 통계
+
+## 🔄 동작 흐름
+
+### 1. 출석 시간 체크
+```dart
+// 30분 전부터 출석 가능
+if (!AttendanceService.canStartAttendance(schedule.dateTime)) {
+  return '출석은 ${minutesUntil}분 후 가능합니다.';
+}
+```
+
+### 2. 출석 완료 후 순위 조회
+```dart
+// 출석 성공 시 자동 순위 업데이트
+final rankings = await dataSource.getAttendanceRanking(scheduleId);
+final userRanking = await dataSource.getUserRanking(scheduleId, userId);
+final stats = await dataSource.getAttendanceStats(scheduleId, totalParticipants);
+```
+
+### 3. UI 업데이트
+- **순위 표시**: 개인 순위 카드 표시
+- **전체 순위 버튼**: "전체 순위 보기" 버튼 활성화
+- **통계 정보**: 출석률, 지각률 등 표시
+
+## 📱 사용자 경험
+
+### 시간 제한 시나리오
+1. **일정 시작 1시간 전**: "30분 후 출석 가능" 표시, 버튼 비활성화
+2. **일정 시작 30분 전**: "출석 가능" 표시, 버튼 활성화
+3. **일정 시작 후**: 지각 출석 가능, 벌금 자동 계산
+
+### 순위 확인 시나리오
+1. **출석 완료**: "🥇 1등으로 도착!" 개인 순위 표시
+2. **전체 순위 보기**: 바텀시트로 모든 참가자 순위 확인
+3. **실시간 업데이트**: 다른 사람 출석 시 순위 변동 확인 가능
+
+### Mock 데이터 예시
+```json
+{
+  "attendances": [
+    {
+      "scheduleId": "s1",
+      "userId": "u1", 
+      "checkInTime": "2025-08-28T09:55:00.000Z", // 1등
+      "lateMinutes": 0,
+      "fineAmount": 0
+    },
+    {
+      "scheduleId": "s1", 
+      "userId": "u2",
+      "checkInTime": "2025-08-28T09:58:00.000Z", // 2등
+      "lateMinutes": 3,
+      "fineAmount": 1000
+    }
+  ]
+}
+```
+
+모든 기능이 완벽하게 구현되어 실제 사용 가능합니다! 🎯✨

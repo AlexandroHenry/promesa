@@ -12,15 +12,70 @@
       "distanceFromVenue": 25.5
     },
     {
+      "scheduleId": "s1",
+      "userId": "u2",
+      "status": 2,
+      "checkInTime": "2025-08-28T09:58:00.000Z",
+      "lateMinutes": 3,
+      "fineAmount": 1000,
+      "checkInLatitude": 37.5665,
+      "checkInLongitude": 126.9780,
+      "distanceFromVenue": 35.2
+    },
+    {
+      "scheduleId": "s1",
+      "userId": "u3",
+      "status": 2,
+      "checkInTime": "2025-08-28T10:02:00.000Z",
+      "lateMinutes": 7,
+      "fineAmount": 2000,
+      "checkInLatitude": 37.5665,
+      "checkInLongitude": 126.9780,
+      "distanceFromVenue": 42.1
+    },
+    {
+      "scheduleId": "s1",
+      "userId": "u4",
+      "status": 2,
+      "checkInTime": "2025-08-28T10:05:00.000Z",
+      "lateMinutes": 10,
+      "fineAmount": 2000,
+      "checkInLatitude": 37.5665,
+      "checkInLongitude": 126.9780,
+      "distanceFromVenue": 38.9
+    },
+    {
+      "scheduleId": "s2",
+      "userId": "u2",
+      "status": 2,
+      "checkInTime": "2025-08-28T13:28:00.000Z",
+      "lateMinutes": 0,
+      "fineAmount": 0,
+      "checkInLatitude": 37.5642,
+      "checkInLongitude": 126.9734,
+      "distanceFromVenue": 28.3
+    },
+    {
       "scheduleId": "s2",
       "userId": "u1",
       "status": 2,
-      "checkInTime": "2025-08-29T14:15:00.000Z",
-      "lateMinutes": 15,
-      "fineAmount": 3000,
+      "checkInTime": "2025-08-28T13:32:00.000Z",
+      "lateMinutes": 2,
+      "fineAmount": 1000,
+      "checkInLatitude": 37.5642,
+      "checkInLongitude": 126.9734,
+      "distanceFromVenue": 31.7
+    },
+    {
+      "scheduleId": "s3",
+      "userId": "u3",
+      "status": 2,
+      "checkInTime": "2025-08-29T18:57:00.000Z",
+      "lateMinutes": 0,
+      "fineAmount": 0,
       "checkInLatitude": 37.4449,
       "checkInLongitude": 127.1385,
-      "distanceFromVenue": 45.0
+      "distanceFromVenue": 32.8
     }
   ]
 }

@@ -1,0 +1,86 @@
+// DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+
+// ignore_for_file: constant_identifier_names
+
+abstract class  LocaleKeys {
+  static const app_title = 'app.title';
+  static const app_description = 'app.description';
+  static const app = 'app';
+  static const home_welcome = 'home.welcome';
+  static const home_welcomeGuest = 'home.welcomeGuest';
+  static const home_haveNiceDay = 'home.haveNiceDay';
+  static const home_loginPrompt = 'home.loginPrompt';
+  static const home_loginButton = 'home.loginButton';
+  static const home_quickActions = 'home.quickActions';
+  static const home_detailInfo = 'home.detailInfo';
+  static const home_detailInfoSubtitle = 'home.detailInfoSubtitle';
+  static const home_webPage = 'home.webPage';
+  static const home_webPageSubtitle = 'home.webPageSubtitle';
+  static const home_profileAction = 'home.profileAction';
+  static const home_profileActionSubtitle = 'home.profileActionSubtitle';
+  static const home_loginAction = 'home.loginAction';
+  static const home_loginActionSubtitle = 'home.loginActionSubtitle';
+  static const home_settingsAction = 'home.settingsAction';
+  static const home_settingsActionSubtitle = 'home.settingsActionSubtitle';
+  static const home_imageViewer = 'home.imageViewer';
+  static const home_imageViewerSubtitle = 'home.imageViewerSubtitle';
+  static const home = 'home';
+  static const common_ok = 'common.ok';
+  static const common_cancel = 'common.cancel';
+  static const common_yes = 'common.yes';
+  static const common_no = 'common.no';
+  static const common_save = 'common.save';
+  static const common_edit = 'common.edit';
+  static const common_delete = 'common.delete';
+  static const common_add = 'common.add';
+  static const common_update = 'common.update';
+  static const common_loading = 'common.loading';
+  static const common_error = 'common.error';
+  static const common_success = 'common.success';
+  static const common_retry = 'common.retry';
+  static const common_back = 'common.back';
+  static const common_next = 'common.next';
+  static const common_previous = 'common.previous';
+  static const common_confirm = 'common.confirm';
+  static const common_search = 'common.search';
+  static const common_filter = 'common.filter';
+  static const common_sort = 'common.sort';
+  static const common_settings = 'common.settings';
+  static const common_home = 'common.home';
+  static const common_profile = 'common.profile';
+  static const common_logout = 'common.logout';
+  static const common_login = 'common.login';
+  static const common = 'common';
+  static const auth_login = 'auth.login';
+  static const auth_logout = 'auth.logout';
+  static const auth_register = 'auth.register';
+  static const auth_forgotPassword = 'auth.forgotPassword';
+  static const auth_email = 'auth.email';
+  static const auth_password = 'auth.password';
+  static const auth_confirmPassword = 'auth.confirmPassword';
+  static const auth_rememberMe = 'auth.rememberMe';
+  static const auth_loginSuccess = 'auth.loginSuccess';
+  static const auth_loginFailed = 'auth.loginFailed';
+  static const auth_invalidCredentials = 'auth.invalidCredentials';
+  static const auth_accountCreated = 'auth.accountCreated';
+  static const auth_resetPasswordSent = 'auth.resetPasswordSent';
+  static const auth = 'auth';
+  static const validation_required = 'validation.required';
+  static const validation_emailInvalid = 'validation.emailInvalid';
+  static const validation_passwordTooShort = 'validation.passwordTooShort';
+  static const validation_passwordsDoNotMatch = 'validation.passwordsDoNotMatch';
+  static const validation_phoneInvalid = 'validation.phoneInvalid';
+  static const validation = 'validation';
+  static const network_noConnection = 'network.noConnection';
+  static const network_serverError = 'network.serverError';
+  static const network_timeout = 'network.timeout';
+  static const network_unknownError = 'network.unknownError';
+  static const network_retry = 'network.retry';
+  static const network = 'network';
+  static const permissions_camera = 'permissions.camera';
+  static const permissions_storage = 'permissions.storage';
+  static const permissions_location = 'permissions.location';
+  static const permissions_notifications = 'permissions.notifications';
+  static const permissions = 'permissions';
+
+}

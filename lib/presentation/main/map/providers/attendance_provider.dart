@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../domain/entities/attendance_entity.dart';
+import '../../../../domain/entities/attendance_ranking_entity.dart';
 import '../../../../domain/entities/schedule_entity.dart';
 import '../../../../domain/services/attendance_service.dart';
 import '../../../../domain/services/location_permission_service.dart';
 import '../../../../data/datasources/attendance/mock_attendance_datasource.dart';
-import 'map_provider.dart';
 
 // 현재 사용자 ID (실제로는 인증 시스템에서 가져와야 함)
 final currentUserIdProvider = StateProvider<String>((ref) => 'u1');
@@ -27,6 +27,9 @@ class AttendanceState {
   final bool isLoading;
   final String? errorMessage;
   final double? currentDistance;
+  final List<AttendanceRankingEntity>? rankings;
+  final int? userRanking;
+  final Map<String, dynamic>? stats;
 
   const AttendanceState({
     this.attendance,
@@ -34,6 +37,9 @@ class AttendanceState {
     this.isLoading = false,
     this.errorMessage,
     this.currentDistance,
+    this.rankings,
+    this.userRanking,
+    this.stats,
   });
 
   AttendanceState copyWith({
@@ -42,6 +48,9 @@ class AttendanceState {
     bool? isLoading,
     String? errorMessage,
     double? currentDistance,
+    List<AttendanceRankingEntity>? rankings,
+    int? userRanking,
+    Map<String, dynamic>? stats,
   }) {
     return AttendanceState(
       attendance: attendance ?? this.attendance,
@@ -49,6 +58,9 @@ class AttendanceState {
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
       currentDistance: currentDistance ?? this.currentDistance,
+      rankings: rankings ?? this.rankings,
+      userRanking: userRanking ?? this.userRanking,
+      stats: stats ?? this.stats,
     );
   }
 }
@@ -64,6 +76,17 @@ class AttendanceNotifier extends StateNotifier<AttendanceState?> {
   /// 출석 추적 시작
   Future<void> startAttendanceTracking(ScheduleEntity schedule) async {
     if (state?.isTracking == true) return;
+
+    // 출석 시간 체크
+    if (!AttendanceService.canStartAttendance(schedule.dateTime)) {
+      final minutesUntil = AttendanceService.getMinutesUntilAttendanceStart(schedule.dateTime);
+      state = AttendanceState(
+        isLoading: false,
+        isTracking: false,
+        errorMessage: '출석은 ${minutesUntil}분 후 가능합니다.',
+      );
+      return;
+    }
 
     state = AttendanceState(
       isTracking: true,
@@ -167,15 +190,27 @@ class AttendanceNotifier extends StateNotifier<AttendanceState?> {
     try {
       final dataSource = ref.read(attendanceDataSourceProvider);
       await dataSource.createAttendance(attendance);
+      
+      // 순위 및 통계 조회
+      final rankings = await dataSource.getAttendanceRanking(scheduleId);
+      final userRanking = await dataSource.getUserRanking(scheduleId, userId);
+      final stats = await dataSource.getAttendanceStats(scheduleId, schedule.participants.length);
+      
+      state = state!.copyWith(
+        attendance: attendance,
+        isTracking: false,
+        rankings: rankings,
+        userRanking: userRanking,
+        stats: stats,
+      );
     } catch (e) {
       // 저장 실패해도 UI는 업데이트
       print('Failed to save attendance: $e');
+      state = state!.copyWith(
+        attendance: attendance,
+        isTracking: false,
+      );
     }
-
-    state = state!.copyWith(
-      attendance: attendance,
-      isTracking: false,
-    );
 
     _stopTracking();
   }
@@ -232,3 +267,14 @@ class AttendanceNotifier extends StateNotifier<AttendanceState?> {
     super.dispose();
   }
 }
+// 스케줄 순위 조회 provider
+final attendanceRankingProvider = FutureProvider.family<List<AttendanceRankingEntity>, String>((ref, scheduleId) async {
+  final dataSource = ref.read(attendanceDataSourceProvider);
+  return await dataSource.getAttendanceRanking(scheduleId);
+});
+
+// 스케줄 통계 조회 provider
+final attendanceStatsProvider = FutureProvider.family<Map<String, dynamic>, ({String scheduleId, int totalParticipants})>((ref, params) async {
+  final dataSource = ref.read(attendanceDataSourceProvider);
+  return await dataSource.getAttendanceStats(params.scheduleId, params.totalParticipants);
+});

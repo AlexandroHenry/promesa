@@ -1,0 +1,30 @@
+# Spider configuration
+# Docs: https://pub.dev/packages/spider
+
+output: lib/core/assets/assets.dart
+class_name: Assets
+package: promesa
+assets_path: assets
+
+# Behavior
+use_svg: true
+use_sort: true
+use_dedup: true
+ignore:
+  - translations/**
+
+# Asset groups
+groups:
+  - path: assets/icons
+    class_name: AppIcons
+    types: [ .png, .jpg, .jpeg, .svg ]
+  - path: assets/images
+    class_name: AppImages
+    types: [ .png, .jpg, .jpeg, .webp ]
+  - path: assets/illustrations
+    class_name: Illustrations
+    types: [ .png, .jpg, .jpeg, .svg ]
+  - path: assets/logos
+    class_name: Logos
+    types: [ .png, .jpg, .jpeg, .svg ]
+

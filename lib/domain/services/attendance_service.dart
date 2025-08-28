@@ -6,6 +6,47 @@ import '../entities/late_fine_entity.dart';
 
 class AttendanceService {
   static const double _attendanceRadius = 50.0; // 출석 인정 반경 (미터)
+  static const int _attendanceStartMinutes = 30; // 출석 시작 가능 시간 (분)
+  
+  /// 출석 가능한 시간인지 확인
+  static bool canStartAttendance(DateTime scheduleTime) {
+    final now = DateTime.now();
+    final attendanceStartTime = scheduleTime.subtract(
+      const Duration(minutes: _attendanceStartMinutes),
+    );
+    
+    return now.isAfter(attendanceStartTime);
+  }
+  
+  /// 출석 시작까지 남은 시간 계산 (분 단위)
+  static int getMinutesUntilAttendanceStart(DateTime scheduleTime) {
+    final now = DateTime.now();
+    final attendanceStartTime = scheduleTime.subtract(
+      const Duration(minutes: _attendanceStartMinutes),
+    );
+    
+    if (now.isAfter(attendanceStartTime)) {
+      return 0; // 이미 출석 가능
+    }
+    
+    final difference = attendanceStartTime.difference(now);
+    return difference.inMinutes;
+  }
+  
+  /// 출석 가능 시간 메시지 생성
+  static String getAttendanceTimeMessage(DateTime scheduleTime) {
+    final minutesUntil = getMinutesUntilAttendanceStart(scheduleTime);
+    
+    if (minutesUntil <= 0) {
+      return '출석 가능';
+    } else if (minutesUntil < 60) {
+      return '${minutesUntil}분 후 출석 가능';
+    } else {
+      final hours = minutesUntil ~/ 60;
+      final minutes = minutesUntil % 60;
+      return '${hours}시간 ${minutes}분 후 출석 가능';
+    }
+  }
   
   /// 출석 가능 거리인지 확인
   static bool isWithinAttendanceRange(
