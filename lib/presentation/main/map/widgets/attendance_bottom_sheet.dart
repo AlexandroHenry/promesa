@@ -52,7 +52,14 @@ class _AttendanceBottomSheetState extends ConsumerState<AttendanceBottomSheet>
     final attendanceState = ref.watch(attendanceStateProvider(widget.schedule.id));
     final currentLocation = ref.watch(currentLocationProvider);
 
-    return Container(
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    return SafeArea(
+      top: false,
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 150),
+        curve: Curves.easeOut,
+        padding: EdgeInsets.only(bottom: bottomInset),
+        child: Container(
       height: MediaQuery.of(context).size.height * 0.6,
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -90,14 +97,26 @@ class _AttendanceBottomSheetState extends ConsumerState<AttendanceBottomSheet>
           ),
           const SizedBox(height: 32),
 
-          // 메인 콘텐츠
+          // 메인 콘텐츠 (오버플로 방지 위한 스크롤 래핑)
           Expanded(
-            child: _buildMainContent(attendanceState, currentLocation),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                    child: _buildMainContent(attendanceState, currentLocation),
+                  ),
+                );
+              },
+            ),
           ),
 
           // 하단 버튼들
           _buildBottomButtons(attendanceState),
         ],
+      ),
+    ),
       ),
     );
   }
@@ -612,11 +631,14 @@ class _AttendanceBottomSheetState extends ConsumerState<AttendanceBottomSheet>
           maxChildSize: 0.9,
           minChildSize: 0.4,
           builder: (context, controller) {
-            return Container(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            return SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                controller: controller,
+                padding: EdgeInsets.fromLTRB(24, 24, 24, 24 + MediaQuery.of(context).viewPadding.bottom),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   // 핸들 바
                   Center(
                     child: Container(
@@ -650,57 +672,58 @@ class _AttendanceBottomSheetState extends ConsumerState<AttendanceBottomSheet>
                   const SizedBox(height: 20),
                   
                   // 순위 목록
-                  Expanded(
-                    child: ListView.builder(
-                      controller: controller,
-                      itemCount: rankings.length,
-                      itemBuilder: (context, index) {
-                        final ranking = rankings[index];
-                        return Card(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: _getRankingColor(ranking.arrivalOrder),
-                              child: Text(
-                                ranking.arrivalOrder.toString(),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            title: Row(
-                              children: [
-                                Text(
-                                  ranking.userName,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                if (ranking.isHost) ...[
-                                  const SizedBox(width: 8),
-                                  Icon(
-                                    Icons.star,
-                                    size: 16,
-                                    color: Colors.orange[600],
-                                  ),
-                                ],
-                              ],
-                            ),
-                            subtitle: Text(ranking.lateText),
-                            trailing: Text(
-                              ranking.timeText,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey[700],
+                  ListView.builder(
+                    controller: controller,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: rankings.length,
+                    itemBuilder: (context, index) {
+                      final ranking = rankings[index];
+                      return Card(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: _getRankingColor(ranking.arrivalOrder),
+                            child: Text(
+                              ranking.arrivalOrder.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                        );
-                      },
-                    ),
+                          title: Row(
+                            children: [
+                              Text(
+                                ranking.userName,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              if (ranking.isHost) ...[
+                                const SizedBox(width: 8),
+                                Icon(
+                                  Icons.star,
+                                  size: 16,
+                                  color: Colors.orange[600],
+                                ),
+                              ],
+                            ],
+                          ),
+                          subtitle: Text(ranking.lateText),
+                          trailing: Text(
+                            ranking.timeText,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
+              ),
               ),
             );
           },

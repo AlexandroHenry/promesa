@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../domain/entities/schedule_entity.dart';
-import '../../../../domain/entities/attendance_entity.dart';
+// removed unused: attendance_entity
 import '../../../../domain/services/location_permission_service.dart';
 import '../../../../domain/services/location_service.dart';
-import '../../../../domain/services/attendance_service.dart';
+// removed unused: attendance_service
 import '../providers/map_provider.dart';
-import '../providers/attendance_provider.dart';
-import '../widgets/attendance_bottom_sheet.dart' hide SizedBox, TextStyle, Text;
+// removed unused: attendance_provider
+import '../widgets/attendance_bottom_sheet.dart';
 
 class MapScreen extends ConsumerStatefulWidget {
   const MapScreen({super.key});
@@ -278,11 +278,14 @@ class _MapScreenState extends ConsumerState<MapScreen> {
           maxChildSize: 0.8,
           minChildSize: 0.3,
           builder: (context, scrollController) {
-            return Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            return SafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                controller: scrollController,
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 20 + MediaQuery.of(context).viewPadding.bottom),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                   // 핸들 바
                   Center(
                     child: Container(
@@ -418,6 +421,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                   ),
                 ],
               ),
+              ),
             );
           },
         );
@@ -438,7 +442,6 @@ class _MapScreenState extends ConsumerState<MapScreen> {
       case ScheduleColor.teal:
         return Colors.teal;
       case ScheduleColor.blue:
-      default:
         return Colors.blue;
     }
   }
