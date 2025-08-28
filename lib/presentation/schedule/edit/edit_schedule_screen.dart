@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../domain/entities/schedule_entity.dart';
 
 @RoutePage()
-class EditSchedulePage extends StatelessWidget {
+class EditScheduleScreen extends StatelessWidget {
   final ScheduleEntity schedule;
-  const EditSchedulePage({super.key, required this.schedule});
+  const EditScheduleScreen({super.key, required this.schedule});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:promesa/presentation/schedule/detail/schedule_detail_screen.dart';
+import 'package:promesa/presentation/schedule/edit/edit_schedule_screen.dart';
 
 // Domain entities
 import '../../domain/entities/schedule_entity.dart';
@@ -20,8 +22,8 @@ import '../../presentation/main/settings/screens/notification_settings_screen.da
 import '../../presentation/shared/screens/webview_screen.dart';
 // Schedule Screens
 import '../../presentation/schedule/add/add_schedule_screen.dart';
-import '../../presentation/schedule/detail/schedule_detail_screen.dart';
-import '../../presentation/schedule/edit/edit_schedule_screen.dart';
+// Note: Do not import schedule detail/edit pages here to avoid circular imports
+// with files that import this router for typed navigation.
 
 part 'app_router.gr.dart';
 
@@ -364,15 +366,25 @@ class AddSchedulePage extends StatelessWidget {
   }
 }
 
-// Schedule Pages
 @RoutePage()
-class AddSchedulePage extends StatelessWidget {
-  const AddSchedulePage({super.key});
+class ScheduleDetailPage extends StatelessWidget {
+  final ScheduleEntity schedule;
+  const ScheduleDetailPage({super.key, required this.schedule});
 
   @override
   Widget build(BuildContext context) {
-    return const AddScheduleScreen();
+    return ScheduleDetailScreen(schedule: schedule);
   }
 }
 
+@RoutePage()
+class EditSchedulePage extends StatelessWidget {
+  final ScheduleEntity schedule;
+  const EditSchedulePage({super.key, required this.schedule});
+
+  @override
+  Widget build(BuildContext context) {
+    return EditScheduleScreen(schedule: schedule);
+  }
+}
 // Wrapper pages are unnecessary; the routed pages are defined in their own files.

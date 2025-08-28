@@ -27,6 +27,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AddSchedulePage(),
       );
     },
+    EditScheduleRoute.name: (routeData) {
+      final args = routeData.argsAs<EditScheduleRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: EditSchedulePage(
+          key: args.key,
+          schedule: args.schedule,
+        ),
+      );
+    },
     HomeDetailRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -98,6 +108,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ProfilePage(),
       );
     },
+    ScheduleDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<ScheduleDetailRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ScheduleDetailPage(
+          key: args.key,
+          schedule: args.schedule,
+        ),
+      );
+    },
     SearchRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -157,6 +177,44 @@ class AddScheduleRoute extends PageRouteInfo<void> {
   static const String name = 'AddScheduleRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [EditSchedulePage]
+class EditScheduleRoute extends PageRouteInfo<EditScheduleRouteArgs> {
+  EditScheduleRoute({
+    Key? key,
+    required ScheduleEntity schedule,
+    List<PageRouteInfo>? children,
+  }) : super(
+          EditScheduleRoute.name,
+          args: EditScheduleRouteArgs(
+            key: key,
+            schedule: schedule,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'EditScheduleRoute';
+
+  static const PageInfo<EditScheduleRouteArgs> page =
+      PageInfo<EditScheduleRouteArgs>(name);
+}
+
+class EditScheduleRouteArgs {
+  const EditScheduleRouteArgs({
+    this.key,
+    required this.schedule,
+  });
+
+  final Key? key;
+
+  final ScheduleEntity schedule;
+
+  @override
+  String toString() {
+    return 'EditScheduleRouteArgs{key: $key, schedule: $schedule}';
+  }
 }
 
 /// generated route for
@@ -335,6 +393,44 @@ class ProfileRoute extends PageRouteInfo<void> {
   static const String name = 'ProfileRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ScheduleDetailPage]
+class ScheduleDetailRoute extends PageRouteInfo<ScheduleDetailRouteArgs> {
+  ScheduleDetailRoute({
+    Key? key,
+    required ScheduleEntity schedule,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ScheduleDetailRoute.name,
+          args: ScheduleDetailRouteArgs(
+            key: key,
+            schedule: schedule,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ScheduleDetailRoute';
+
+  static const PageInfo<ScheduleDetailRouteArgs> page =
+      PageInfo<ScheduleDetailRouteArgs>(name);
+}
+
+class ScheduleDetailRouteArgs {
+  const ScheduleDetailRouteArgs({
+    this.key,
+    required this.schedule,
+  });
+
+  final Key? key;
+
+  final ScheduleEntity schedule;
+
+  @override
+  String toString() {
+    return 'ScheduleDetailRouteArgs{key: $key, schedule: $schedule}';
+  }
 }
 
 /// generated route for

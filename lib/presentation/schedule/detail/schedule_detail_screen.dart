@@ -7,10 +7,10 @@ import '../../../domain/entities/participant_entity.dart';
 import '../../providers/auth_provider.dart';
 
 @RoutePage()
-class ScheduleDetailPage extends ConsumerWidget {
+class ScheduleDetailScreen extends ConsumerWidget {
   final ScheduleEntity schedule;
 
-  const ScheduleDetailPage({super.key, required this.schedule});
+  const ScheduleDetailScreen({super.key, required this.schedule});
 
   bool _isHost(WidgetRef ref, ScheduleEntity s) {
     final user = ref.read(authNotifierProvider).user;
