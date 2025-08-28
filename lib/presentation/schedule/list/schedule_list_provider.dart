@@ -17,7 +17,7 @@ class ScheduleListState with _$ScheduleListState {
     @Default(false) bool isLoading,
     @Default([]) List<ScheduleEntity> items,
     @Default(ScheduleFilter.all) ScheduleFilter filter,
-    @Default(ScheduleView.week) ScheduleView view,
+    @Default(ScheduleView.day) ScheduleView view,
     String? errorMessage,
   }) = _ScheduleListState;
 }

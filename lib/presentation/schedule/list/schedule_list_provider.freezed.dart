@@ -150,7 +150,7 @@ class _$ScheduleListStateImpl implements _ScheduleListState {
       {this.isLoading = false,
       final List<ScheduleEntity> items = const [],
       this.filter = ScheduleFilter.all,
-      this.view = ScheduleView.week,
+      this.view = ScheduleView.day,
       this.errorMessage})
       : _items = items;
 
