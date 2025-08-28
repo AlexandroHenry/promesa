@@ -103,6 +103,7 @@ class _AttendanceBottomSheetState extends ConsumerState<AttendanceBottomSheet>
               builder: (context, constraints) {
                 return SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
+                  clipBehavior: Clip.none,
                   child: ConstrainedBox(
                     constraints: BoxConstraints(minHeight: constraints.maxHeight),
                     child: _buildMainContent(attendanceState, currentLocation),
